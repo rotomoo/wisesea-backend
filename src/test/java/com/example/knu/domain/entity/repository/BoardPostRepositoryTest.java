@@ -1,0 +1,130 @@
+package com.example.knu.domain.entity.repository;
+
+import com.example.knu.domain.entity.board.Board;
+import com.example.knu.domain.entity.board.BoardCategory;
+import com.example.knu.domain.entity.board.BoardPost;
+import com.example.knu.domain.repository.BoardCategoryRepository;
+import com.example.knu.domain.repository.BoardPostRepository;
+import com.example.knu.domain.repository.BoardRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+
+@DataJpaTest
+class BoardPostRepositoryTest {
+
+    @Autowired
+    BoardRepository boardRepository;
+    @Autowired
+    BoardCategoryRepository boardCategoryRepository;
+    @Autowired
+    BoardPostRepository boardPostRepository;
+    @AfterEach
+    void end() {
+        boardPostRepository.deleteAll();
+        boardCategoryRepository.deleteAll();
+        boardRepository.deleteAll();
+    }
+    @DisplayName("게시'글' 생성 테스트")
+    @Test
+    void createPost() {
+        // given
+        String boardName = "커뮤니티";
+        Board board = createBoard(boardName);
+
+        String categoryName = "고민상담";
+        BoardCategory category = createCategory(categoryName, 1, "카테고리 설명", board);
+
+        BoardPost post = BoardPost.builder()
+                .title("제목")
+                .contents("내용")
+                .boardCategory(category)
+                .thumbnailImageUrl("image")
+                .build();
+
+        boardPostRepository.save(post);
+
+        // when
+        List<BoardPost> all = boardPostRepository.findAll();
+        BoardPost boardPost = all.get(0);
+
+        // then
+        assertThat(boardPost.getBoardCategory().getBoard().getName()).isEqualTo(boardName);
+        assertThat(boardPost.getTitle()).isEqualTo("제목");
+        assertThat(boardPost.getBoardCategory().getName()).isEqualTo(categoryName);
+
+    }
+
+    @DisplayName("커뮤니티/프로젝트 2개 생성 후 커뮤니티안에 카테고리 2개 생성 후 각각 게시글 조회")
+    @Test
+    void findAllPostByCategory() {
+        // given
+        String boardCommunity = "community";
+        String boardProject = "project";
+        Board community = createBoard(boardCommunity);
+        Board project = createBoard(boardProject);
+
+        String mentoring = "mentoring";
+        String free = "free";
+        BoardCategory createCategoryByMentoring = createCategory(mentoring, 1, "멘토링", community);
+        BoardCategory createCategoryByFree = createCategory(free, 2, "자유", community);
+
+        for (int i = 0; i < 5; i++) {
+            BoardPost post = BoardPost.builder()
+                    .title("자유" + i)
+                    .contents("자유" + i)
+                    .boardCategory(createCategoryByFree)
+                    .thumbnailImageUrl("image")
+                    .build();
+            boardPostRepository.save(post);
+        }
+
+        for (int i = 0; i < 5; i++) {
+            BoardPost post = BoardPost.builder()
+                    .title("멘토링" + i)
+                    .contents("멘토링" + i)
+                    .boardCategory(createCategoryByMentoring)
+                    .thumbnailImageUrl("image")
+                    .build();
+            boardPostRepository.save(post);
+        }
+
+        // when
+        List<BoardPost> all = boardPostRepository.findAll();
+
+        // then
+        assertThat(all.size()).isEqualTo(10);
+
+    }
+
+    private Board createBoard(String name) {
+        Board createBoardCommunity = Board.builder()
+                .name(name)
+                .orders(1)
+                .build();
+
+        Board savedBoard = boardRepository.save(createBoardCommunity);
+
+        return savedBoard;
+    }
+
+    private BoardCategory createCategory(String name, int orders, String desc, Board board) {
+        BoardCategory boardCategory = BoardCategory.builder()
+                .name(name)
+                .orders(orders)
+                .desc(desc)
+                .board(board)
+                .build();
+
+        BoardCategory savedCategory = boardCategoryRepository.save(boardCategory);
+
+        return savedCategory;
+    }
+
+}
