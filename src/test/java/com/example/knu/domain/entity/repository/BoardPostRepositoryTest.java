@@ -97,10 +97,16 @@ class BoardPostRepositoryTest {
 
         // when
         List<BoardPost> all = boardPostRepository.findAll();
-
+        List<BoardPost> allByBoardCategoryMentoring = boardPostRepository.findAllByBoardCategoryId(createCategoryByMentoring.getId());
+        List<BoardPost> allByBoardCategoryFree = boardPostRepository.findAllByBoardCategoryId(createCategoryByFree.getId());
         // then
         assertThat(all.size()).isEqualTo(10);
 
+        assertThat(allByBoardCategoryMentoring.size()).isEqualTo(5);
+        assertThat(allByBoardCategoryMentoring.get(0).getBoardCategory().getName()).isEqualTo(mentoring);
+
+        assertThat(allByBoardCategoryFree.size()).isEqualTo(5);
+        assertThat(allByBoardCategoryFree.get(0).getBoardCategory().getName()).isEqualTo(free);
     }
 
     private Board createBoard(String name) {
