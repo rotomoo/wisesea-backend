@@ -1,4 +1,7 @@
 spring:
+  sql:
+    init:
+      mode: always
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -6,6 +9,7 @@ spring:
     driver-class-name: org.h2.Driver
 
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
     properties:
