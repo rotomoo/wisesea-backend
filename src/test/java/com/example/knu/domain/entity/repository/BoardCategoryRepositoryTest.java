@@ -30,8 +30,8 @@ class BoardCategoryRepositoryTest {
 
         BoardCategory createCategory = BoardCategory.builder()
                 .name("고민상담")
-                .orders(1)
-                .desc("커뮤니티에 대한 설명입니다.")
+                .priority(1)
+//                .description("커뮤니티에 대한 설명입니다.")
                 .board(savedBoard)
                 .build();
 
@@ -50,7 +50,7 @@ class BoardCategoryRepositoryTest {
     private Board createBoard(String name) {
         Board createBoardCommunity = Board.builder()
                 .name(name)
-                .orders(1)
+                .priority(1)
                 .build();
 
         Board savedBoard = boardRepository.save(createBoardCommunity);

@@ -112,7 +112,7 @@ class BoardPostRepositoryTest {
     private Board createBoard(String name) {
         Board createBoardCommunity = Board.builder()
                 .name(name)
-                .orders(1)
+                .priority(1)
                 .build();
 
         Board savedBoard = boardRepository.save(createBoardCommunity);
@@ -120,11 +120,11 @@ class BoardPostRepositoryTest {
         return savedBoard;
     }
 
-    private BoardCategory createCategory(String name, int orders, String desc, Board board) {
+    private BoardCategory createCategory(String name, int priority, String description, Board board) {
         BoardCategory boardCategory = BoardCategory.builder()
                 .name(name)
-                .orders(orders)
-                .desc(desc)
+                .priority(priority)
+//                .description(description)
                 .board(board)
                 .build();
 

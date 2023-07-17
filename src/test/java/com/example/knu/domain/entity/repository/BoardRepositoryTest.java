@@ -23,12 +23,12 @@ class BoardRepositoryTest {
         // given
         Board createCommunity = Board.builder()
                 .name("커뮤니티")
-                .orders(1)
+                .priority(1)
                 .build();
 //
         Board createProject = Board.builder()
                 .name("프로젝트")
-                .orders(2)
+                .priority(2)
                 .build();
         // when
         boardRepository.save(createCommunity);
