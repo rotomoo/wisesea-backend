@@ -8,6 +8,7 @@ import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.domain.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ class BoardPostRepositoryTest {
     BoardCategoryRepository boardCategoryRepository;
     @Autowired
     BoardPostRepository boardPostRepository;
+    @BeforeEach
+    void setUp() {
+        boardPostRepository.deleteAll();
+        boardCategoryRepository.deleteAll();
+        boardRepository.deleteAll();
+    }
 
     @DisplayName("게시'글' 생성 테스트")
     @Test

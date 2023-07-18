@@ -2,8 +2,10 @@ package com.example.knu.domain.entity.repository;
 
 import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.repository.BoardCategoryRepository;
+import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.domain.repository.BoardRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,14 @@ class BoardRepositoryTest {
     BoardRepository boardRepository;
     @Autowired
     BoardCategoryRepository boardCategoryRepository;
+    @Autowired
+    BoardPostRepository boardPostRepository;
+    @BeforeEach
+    void setUp() {
+        boardPostRepository.deleteAll();
+        boardCategoryRepository.deleteAll();
+        boardRepository.deleteAll();
+    }
 
     @DisplayName("게시판 생성 테스트")
     @Test

@@ -3,6 +3,7 @@ package com.example.knu.domain.entity.repository;
 import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.repository.BoardCategoryRepository;
+import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.domain.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,14 @@ class BoardCategoryRepositoryTest {
     BoardCategoryRepository boardCategoryRepository;
     @Autowired
     BoardRepository boardRepository;
+    @Autowired
+    BoardPostRepository boardPostRepository;
+    @BeforeEach
+    void setUp() {
+        boardPostRepository.deleteAll();
+        boardCategoryRepository.deleteAll();
+        boardRepository.deleteAll();
+    }
 
     @DisplayName("카테고리 생성 테스트")
     @Test
