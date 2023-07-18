@@ -1,9 +1,9 @@
 package com.example.knu.domain.entity.repository;
 
 import com.example.knu.domain.entity.board.Board;
-import com.example.knu.domain.repository.BoardCategoryRepository;
-import com.example.knu.domain.repository.BoardPostRepository;
-import com.example.knu.domain.repository.BoardRepository;
+import com.example.knu.repository.BoardCategoryRepository;
+import com.example.knu.repository.BoardPostRepository;
+import com.example.knu.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -9,4 +9,5 @@ import org.springframework.http.HttpStatus;
 public enum ResultCode {
     SUCCESS(HttpStatus.OK);
     private final HttpStatus httpStatus;
+
 }

@@ -1,4 +1,4 @@
-package com.example.knu.domain.config;
+package com.example.knu.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
