@@ -1,6 +1,7 @@
 package com.example.knu.domain.service;
 
 import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
+import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
 import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
@@ -32,6 +33,7 @@ class BoardPostServiceTest {
     BoardCategoryRepository boardCategoryRepository;
     Board board;
     BoardCategory boardCategory;
+    BoardCategory mentorCategory;
 
     @BeforeEach
     void setUp() {
@@ -46,8 +48,13 @@ class BoardPostServiceTest {
                 .build());
         boardCategory = boardCategoryRepository.save(BoardCategory.builder()
                 .board(board)
-                .name("고민상다")
+                .name("고민상담")
                 .priority(1)
+                .build());
+        mentorCategory = boardCategoryRepository.save(BoardCategory.builder()
+                .board(board)
+                .name("멘토멘티")
+                .priority(2)
                 .build());
     }
 
@@ -69,6 +76,30 @@ class BoardPostServiceTest {
         // then
         assertThat(findPost.get(0).getBoardCategory().getName()).isEqualTo(boardCategory.getName());
         assertThat(findPost.get(0).getTitle()).isEqualTo(createDto.getTitle());
+    }
+
+    @DisplayName("작성된 게시글 카테고리 선택해서 전체 조회")
+    @Test
+    void findPostByCategoryId() {
+        // given
+        BoardPostCreateRequestDto createDto = BoardPostCreateRequestDto.builder()
+                .title("고민상담")
+                .contents("내용")
+                .build();
+
+        boardPostService.createBoardPost(createDto, boardCategory.getId());
+        createDto = BoardPostCreateRequestDto.builder()
+                .title("멘토멘티")
+                .contents("내용")
+                .build();
+        boardPostService.createBoardPost(createDto, mentorCategory.getId());
+
+        // when
+        List<BoardPostListResponseDto> findPostListByCategoryId = boardPostService.findBoardPost(boardCategory.getId());
+
+        // then
+        Assertions.assertThat(findPostListByCategoryId.size()).isEqualTo(1);
+
     }
 
 }
