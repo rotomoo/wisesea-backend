@@ -3,6 +3,7 @@ package com.example.knu.domain.service;
 import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.domain.dto.board.response.BoardPostCreateResponseDto;
 import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
+import com.example.knu.domain.dto.board.response.BoardPostOneResponseDto;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.repository.BoardCategoryRepository;
@@ -42,6 +43,16 @@ public class BoardPostService {
                 .collect(Collectors.toList());
 
         return boardPostListResponseDtos;
+    }
+
+    @Transactional
+    public BoardPostOneResponseDto findOneBoardPost(Long categoryId, Long postId) {
+        BoardPost byBoardPostId = postRepository.findByBoardPostId(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        byBoardPostId.plusBoardPostViewCount();
+
+        return new BoardPostOneResponseDto(byBoardPostId);
     }
 
 

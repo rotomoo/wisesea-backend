@@ -4,6 +4,7 @@ import com.example.knu.domain.dto.Response;
 import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.domain.dto.board.response.BoardPostCreateResponseDto;
 import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
+import com.example.knu.domain.dto.board.response.BoardPostOneResponseDto;
 import com.example.knu.domain.service.BoardPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,4 +30,13 @@ public class BoardPostController {
     public Response<List<BoardPostListResponseDto>> findBoardPost(@PathVariable Long categoryId) {
         return Response.success(postService.findBoardPost(categoryId));
     }
+
+    @GetMapping("/boards/{categoryId}/{postId}")
+    public Response<BoardPostOneResponseDto> findOneBoardPost(@PathVariable Long categoryId,
+                                                              @PathVariable Long postId) {
+        return Response.success(postService.findOneBoardPost(categoryId, postId));
+    }
+
+
+
 }
