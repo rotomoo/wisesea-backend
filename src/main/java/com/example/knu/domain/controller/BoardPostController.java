@@ -3,14 +3,14 @@ package com.example.knu.domain.controller;
 import com.example.knu.domain.dto.Response;
 import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.domain.dto.board.response.BoardPostCreateResponseDto;
+import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
 import com.example.knu.domain.service.BoardPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,5 +23,10 @@ public class BoardPostController {
                                                                 @PathVariable Long categoryId) {
 //        postService.createBoardPost(postDto, categoryId);
         return Response.success(postService.createBoardPost(postDto, categoryId));
+    }
+
+    @GetMapping("/boards/{categoryId}/posts")
+    public Response<List<BoardPostListResponseDto>> findBoardPost(@PathVariable Long categoryId) {
+        return Response.success(postService.findBoardPost(categoryId));
     }
 }

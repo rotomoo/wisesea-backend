@@ -2,6 +2,7 @@ package com.example.knu.domain.service;
 
 import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.domain.dto.board.response.BoardPostCreateResponseDto;
+import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.repository.BoardCategoryRepository;
@@ -9,14 +10,20 @@ import com.example.knu.domain.repository.BoardPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class BoardPostService {
     private final BoardPostRepository postRepository;
     private final BoardCategoryRepository categoryRepository;
 
+    @Transactional
     public BoardPostCreateResponseDto createBoardPost(BoardPostCreateRequestDto postDto,
                                                       Long categoryId) {
         BoardCategory boardCategory = categoryRepository.findById(categoryId)
@@ -26,4 +33,16 @@ public class BoardPostService {
 
         return new BoardPostCreateResponseDto(boardPost);
     }
+
+    public List<BoardPostListResponseDto> findBoardPost(Long categoryId) {
+        List<BoardPost> boardPostsByCategoryId = postRepository.findAllByBoardCategoryId(categoryId);
+
+        List<BoardPostListResponseDto> boardPostListResponseDtos = boardPostsByCategoryId.stream()
+                .map(BoardPostListResponseDto::new)
+                .collect(Collectors.toList());
+
+        return boardPostListResponseDtos;
+    }
+
+
 }
