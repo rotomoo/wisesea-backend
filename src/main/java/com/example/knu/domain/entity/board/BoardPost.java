@@ -36,4 +36,8 @@ public class BoardPost extends BaseTimeEntity {
         this.likeCount = 0;
         this.boardCategory = boardCategory;
     }
+
+    public void plusBoardPostViewCount() {
+        this.viewCount++;
+    }
 }
