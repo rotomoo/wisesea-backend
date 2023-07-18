@@ -2,6 +2,7 @@ package com.example.knu.domain.entity.board;
 
 import com.example.knu.domain.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ public class NoticeKnouOrigin {
 
     private String code;
 
+    @Column(unique = true)
+    @NotNull
     private String title;
 
     private String write;

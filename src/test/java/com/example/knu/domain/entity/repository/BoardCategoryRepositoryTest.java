@@ -4,27 +4,25 @@ import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.repository.BoardCategoryRepository;
 import com.example.knu.domain.repository.BoardRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
 class BoardCategoryRepositoryTest {
     @Autowired
     BoardCategoryRepository boardCategoryRepository;
     @Autowired
     BoardRepository boardRepository;
-    @BeforeEach
-    void setUp() {
-        boardCategoryRepository.deleteAll();
-        boardRepository.deleteAll();
-    }
 
     @DisplayName("카테고리 생성 테스트")
     @Test
