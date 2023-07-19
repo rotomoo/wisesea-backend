@@ -1,14 +1,13 @@
 package com.example.knu.domain.service;
 
-import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
-import com.example.knu.dto.board.response.BoardPostListResponseDto;
+import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
+import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
 import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
-import com.example.knu.repository.BoardCategoryRepository;
-import com.example.knu.repository.BoardPostRepository;
-import com.example.knu.repository.BoardRepository;
-import com.example.knu.service.BoardPostService;
+import com.example.knu.domain.repository.BoardCategoryRepository;
+import com.example.knu.domain.repository.BoardPostRepository;
+import com.example.knu.domain.repository.BoardRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class BoardPostServiceTest {

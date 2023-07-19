@@ -1,4 +1,4 @@
-package com.example.knu.dto.board.response;
+package com.example.knu.domain.dto.board.response;
 
 import com.example.knu.domain.entity.board.BoardPost;
 import lombok.AccessLevel;

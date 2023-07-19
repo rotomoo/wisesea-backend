@@ -1,4 +1,4 @@
-package com.example.knu.dto.board.request;
+package com.example.knu.domain.dto.board.request;
 
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
