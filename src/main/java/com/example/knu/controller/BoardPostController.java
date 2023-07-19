@@ -1,14 +1,13 @@
-package com.example.knu.domain.controller;
+package com.example.knu.controller;
 
-import com.example.knu.domain.dto.Response;
-import com.example.knu.domain.dto.board.request.BoardPostCreateRequestDto;
-import com.example.knu.domain.dto.board.response.BoardPostCreateResponseDto;
-import com.example.knu.domain.dto.board.response.BoardPostListResponseDto;
-import com.example.knu.domain.dto.board.response.BoardPostOneResponseDto;
-import com.example.knu.domain.service.BoardPostService;
+import com.example.knu.dto.Response;
+import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
+import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
+import com.example.knu.dto.board.response.BoardPostListResponseDto;
+import com.example.knu.dto.board.response.BoardPostOneResponseDto;
+import com.example.knu.service.BoardPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
