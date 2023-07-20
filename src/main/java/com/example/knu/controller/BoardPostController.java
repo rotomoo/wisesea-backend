@@ -1,6 +1,6 @@
 package com.example.knu.controller;
 
-import com.example.knu.dto.Response;
+import com.example.knu.common.Response;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
 import com.example.knu.dto.board.response.BoardPostListResponseDto;

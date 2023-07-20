@@ -1,5 +1,6 @@
 package com.example.knu.controller;
 
+import com.example.knu.common.Response;
 import com.example.knu.dto.user.UserDto;
 import com.example.knu.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,10 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(
-            @Valid @RequestBody UserDto userDto
-    ) {
-        return ResponseEntity.ok(userService.signup(userDto));
+    public Response signup(@Valid @RequestBody UserDto userDto) {
+        return Response.success(userService.signup(userDto));
     }
 
     @GetMapping("/user")

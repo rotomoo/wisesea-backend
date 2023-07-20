@@ -1,6 +1,5 @@
-package com.example.knu.dto;
+package com.example.knu.common;
 
-import com.example.knu.domain.entity.enums.ResultCode;
 import lombok.Getter;
 
 @Getter

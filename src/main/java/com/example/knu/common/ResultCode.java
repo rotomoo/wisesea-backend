@@ -1,4 +1,4 @@
-package com.example.knu.domain.entity.enums;
+package com.example.knu.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
