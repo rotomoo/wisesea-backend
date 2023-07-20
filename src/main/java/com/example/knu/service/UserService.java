@@ -1,12 +1,12 @@
 package com.example.knu.service;
 
-import com.example.knu.dto.user.UserDto;
 import com.example.knu.domain.entity.user.Authority;
+import com.example.knu.domain.entity.user.User;
+import com.example.knu.domain.repository.UserRepository;
+import com.example.knu.dto.user.UserDto;
 import com.example.knu.exception.DuplicateMemberException;
 import com.example.knu.exception.NotFoundMemberException;
-import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.util.SecurityUtil;
-import com.example.knu.domain.entity.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

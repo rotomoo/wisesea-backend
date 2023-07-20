@@ -1,13 +1,13 @@
 package com.example.knu.service;
 
-import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
-import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
-import com.example.knu.dto.board.response.BoardPostListResponseDto;
-import com.example.knu.dto.board.response.BoardPostOneResponseDto;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.repository.BoardCategoryRepository;
 import com.example.knu.domain.repository.BoardPostRepository;
+import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
+import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
+import com.example.knu.dto.board.response.BoardPostListResponseDto;
+import com.example.knu.dto.board.response.BoardPostOneResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

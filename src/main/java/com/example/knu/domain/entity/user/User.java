@@ -1,5 +1,6 @@
 package com.example.knu.domain.entity.user;
 
+import com.example.knu.domain.entity.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,15 +20,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "username", length = 50, unique = true)
-    private String username;
+    @Column(unique = true)
+    private String loginId;
 
-    @Column(name = "password", length = 100)
     private String password;
 
-    @Column(name = "nickname", length = 50)
-    private String nickname;
+    private String username;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
+
+    private Boolean emailReceiveYn;
+
+    private String nickname;
 
     @Column(name = "activated")
     private boolean activated;

@@ -1,6 +1,5 @@
-package com.example.knu.domain.entity.board;
+package com.example.knu.domain.entity;
 
-import com.example.knu.domain.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -15,7 +14,7 @@ public class NoticeKnouOrigin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx")
-    private Long idx;
+    private Long id;
 
     private String code;
 
