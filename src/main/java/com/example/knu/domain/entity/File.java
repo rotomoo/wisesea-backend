@@ -4,7 +4,6 @@ import com.example.knu.domain.entity.board.BoardPost;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,10 +23,4 @@ public class File extends BaseTimeEntity{
 
     @NotNull
     private String url;
-
-    @Builder
-    public File(BoardPost boardPost, String url) {
-        this.boardPost = boardPost;
-        this.url = url;
-    }
 }

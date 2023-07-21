@@ -1,4 +1,4 @@
-package com.example.knu.controller;
+package com.example.knu.controller.common;
 
 import com.example.knu.common.Response;
 import com.example.knu.exception.DuplicateMemberException;

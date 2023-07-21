@@ -3,7 +3,6 @@ package com.example.knu.domain.entity;
 import com.example.knu.domain.entity.board.BoardPost;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,10 +23,4 @@ public class BoardPostHashtag extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
-
-    @Builder
-    public BoardPostHashtag(BoardPost boardPost, Hashtag hashtag) {
-        this.boardPost = boardPost;
-        this.hashtag = hashtag;
-    }
 }

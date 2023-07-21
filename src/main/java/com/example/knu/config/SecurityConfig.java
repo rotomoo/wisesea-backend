@@ -67,14 +67,7 @@ public class SecurityConfig {
                                 "/api/hello",
                                 "/api/authenticate",
                                 "/api/signup",
-<<<<<<< HEAD
                                 "/api/login"
-=======
-                                "/api/all/**",
-                                "/api/get/test/**",
-                                "/api/admin/**", // 로그인 구현되면 살제 필요
-                                "/api/user/**" // 동일
->>>>>>> 30bb285ff241fec6e08d368328060446368aa283
                                 ).permitAll()
 //                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated()

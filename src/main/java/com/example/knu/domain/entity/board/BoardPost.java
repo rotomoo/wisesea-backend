@@ -43,8 +43,4 @@ public class BoardPost extends BaseTimeEntity {
     public void plusBoardPostViewCount() {
         this.viewCount++;
     }
-
-    public void updateThumbnailImageUrl(String thumbnailImageUrl) {
-        this.thumbnailImageUrl = thumbnailImageUrl;
-    }
 }

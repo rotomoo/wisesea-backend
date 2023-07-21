@@ -34,8 +34,6 @@ public class User {
 
     private String nickname;
 
-    private String profileImageUrl;
-
     @Column(name = "activated")
     private boolean activated;
 
