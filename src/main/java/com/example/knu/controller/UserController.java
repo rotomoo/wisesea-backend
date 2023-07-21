@@ -1,6 +1,7 @@
 package com.example.knu.controller;
 
 import com.example.knu.common.Response;
+import com.example.knu.domain.entity.user.JwtToken;
 import com.example.knu.dto.user.UserDto;
 import com.example.knu.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -35,6 +37,16 @@ public class UserController {
     public Response signup(@Valid @RequestBody UserDto userDto) {
         return Response.success(userService.signup(userDto));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtToken> loginSuccess(@RequestBody Map<String, String> loginForm){
+        JwtToken token = userService.login(loginForm.get("username"), loginForm.get("password"));
+        return ResponseEntity.ok(token);
+    }
+
+
+
+
 
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")

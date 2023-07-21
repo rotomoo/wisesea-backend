@@ -49,6 +49,11 @@ public class SecurityConfig {
         http
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf(csrf -> csrf.disable())
+                .formLogin(formLogin ->formLogin.disable())
+                .httpBasic(httpBasic ->httpBasic.disable())
+
+
+
 
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -56,13 +61,13 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
 
+
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(
                                 "/api/hello",
                                 "/api/authenticate",
                                 "/api/signup",
-                                "/api/all/**",
-                                "/api/get/test/**"
+                                "/api/login"
                                 ).permitAll()
 //                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated()
@@ -71,6 +76,7 @@ public class SecurityConfig {
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 )
 
                 // enable h2-console
