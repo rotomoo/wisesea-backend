@@ -12,6 +12,7 @@ import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.*;
 import com.example.knu.domain.repository.NoticeKnouOriginRepository;
 import com.example.knu.dto.notice.NoticeCreation;
+import com.example.knu.dto.notice.NoticeUpdate;
 import com.example.knu.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,10 @@ public class NoticeService {
         }
 
         if (noticeCreation.getFiles() != null && !noticeCreation.getFiles().isEmpty()) {
-            for (MultipartFile multipartFile : noticeCreation.getFiles()) {
+            List<MultipartFile> files = noticeCreation.getFiles();
+            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+
+            for (MultipartFile multipartFile : files) {
                 String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
                         S3Directory.BOARD.getPath() + boardPost.getId() + S3Directory.FILES.getPath());
 
@@ -105,6 +109,64 @@ public class NoticeService {
 
         BoardPost boardPost = foundBoardPost.get();
         boardPostRepository.deleteByQuerydsl(boardPost);
+
+        return Response.success(null);
+    }
+
+    /**
+     * 공지사항 수정
+     *
+     * @param postid
+     * @return
+     */
+    @Transactional
+    public Response updateNotice(Long postid, NoticeUpdate noticeUpdate) {
+        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
+        if (foundBoardPost.isEmpty()) throw new CommonException("해당 게시글을 찾을수 없습니다.");
+
+        BoardPost boardPost = foundBoardPost.get();
+
+        if (noticeUpdate.getHashtags() != null && !noticeUpdate.getHashtags().isEmpty()) {
+            List<String> hashtags = noticeUpdate.getHashtags();
+            if (hashtags.size() > 5) throw new CommonException("해시태그는 5개까지 입력 가능합니다");
+
+            for (String inputHashtag : hashtags) {
+                if (!hashtagRepository.existsByName(inputHashtag)) {
+                    Hashtag hashtag = Hashtag.builder()
+                            .name(inputHashtag)
+                            .build();
+
+                    hashtagRepository.save(hashtag);
+                }
+            }
+
+            List<Hashtag> targetHashtags = hashtagRepository.findAllByNameIn(hashtags);
+            for (Hashtag targetHashtag : targetHashtags) {
+
+                BoardPostHashtag boardPostHashtag = BoardPostHashtag.builder()
+                        .boardPost(boardPost)
+                        .hashtag(targetHashtag)
+                        .build();
+
+                boardPostHashtagRepository.save(boardPostHashtag);
+            }
+        }
+
+        if (noticeCreation.getFiles() != null && !noticeCreation.getFiles().isEmpty()) {
+            List<MultipartFile> files = noticeCreation.getFiles();
+            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+
+            for (MultipartFile multipartFile : files) {
+                String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
+                        S3Directory.BOARD.getPath() + boardPost.getId() + S3Directory.FILES.getPath());
+
+                File file = File.builder()
+                        .boardPost(boardPost)
+                        .url(fileUrl)
+                        .build();
+                fileRepository.save(file);
+            }
+        }
 
         return Response.success(null);
     }

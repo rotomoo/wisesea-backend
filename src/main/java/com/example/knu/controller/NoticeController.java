@@ -3,6 +3,7 @@ package com.example.knu.controller;
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.dto.notice.NoticeCreation;
+import com.example.knu.dto.notice.NoticeUpdate;
 import com.example.knu.service.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,4 +43,16 @@ public class NoticeController {
         return response;
     }
 
+    /**
+     * 공지사항 수정
+     */
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PatchMapping("/api/admin/boards/notices/{postid}")
+    public Response updateNotice(@PathVariable Long postid,
+                                 @ModelAttribute @Valid NoticeUpdate noticeUpdate) {
+
+        Response response = noticeService.updateNotice(postid, noticeUpdate);
+
+        return response;
+    }
 }
