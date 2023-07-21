@@ -115,13 +115,13 @@ public class NoticeService {
 
     /**
      * 공지사항 수정
-     *
      * @param postid
+     * @param noticeUpdate
      * @return
      */
     @Transactional
     public Response updateNotice(Long postid, NoticeUpdate noticeUpdate) {
-        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
+/*        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
         if (foundBoardPost.isEmpty()) throw new CommonException("해당 게시글을 찾을수 없습니다.");
 
         BoardPost boardPost = foundBoardPost.get();
@@ -166,7 +166,7 @@ public class NoticeService {
                         .build();
                 fileRepository.save(file);
             }
-        }
+        }*/
 
         return Response.success(null);
     }
