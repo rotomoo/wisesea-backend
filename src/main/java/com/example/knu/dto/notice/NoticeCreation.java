@@ -17,6 +17,7 @@ public class NoticeCreation {
     @NotBlank
     private String contents;
     private List<MultipartFile> files;
+    private List<String> hashtags;
 
     public BoardPost createBoardPost(User user, BoardCategory boardCategory) {
         return BoardPost.builder()

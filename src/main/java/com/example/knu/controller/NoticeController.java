@@ -1,9 +1,9 @@
-package com.example.knu.controller.notice;
+package com.example.knu.controller;
 
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.dto.notice.NoticeCreation;
-import com.example.knu.service.notice.NoticeService;
+import com.example.knu.service.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
