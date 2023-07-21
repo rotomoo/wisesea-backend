@@ -48,17 +48,20 @@ public class NoticeService {
         BoardPost boardPost = noticeCreation.createBoardPost(user, boardCategory);
         boardPostRepository.save(boardPost);
 
-        boardPost.updateThumbnailImageUrl(user.getProfileImageUrl());
+        // TODO 로그인 기능 되면 유저 프로필 이미지 넣기
+        boardPost.updateThumbnailImageUrl(null);
 
-        for (MultipartFile multipartFile : noticeCreation.getFiles()) {
-            String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
-                    S3Directory.BOARD.getPath() + boardPost.getId() + S3Directory.FILES.getPath());
+        if (noticeCreation.getFiles() != null && !noticeCreation.getFiles().isEmpty()) {
+            for (MultipartFile multipartFile : noticeCreation.getFiles()) {
+                String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
+                        S3Directory.BOARD.getPath() + boardPost.getId() + S3Directory.FILES.getPath());
 
-            File file = File.builder()
-                    .boardPost(boardPost)
-                    .url(fileUrl)
-                    .build();
-            fileRepository.save(file);
+                File file = File.builder()
+                        .boardPost(boardPost)
+                        .url(fileUrl)
+                        .build();
+                fileRepository.save(file);
+            }
         }
 
         return Response.success(null);
