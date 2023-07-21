@@ -12,6 +12,7 @@ import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.domain.repository.FileRepository;
 import com.example.knu.domain.repository.notice.NoticeKnouOriginRepository;
 import com.example.knu.dto.notice.NoticeCreation;
+import com.example.knu.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,22 @@ public class NoticeService {
                 fileRepository.save(file);
             }
         }
+
+        return Response.success(null);
+    }
+
+    /**
+     * 공지사항 삭제
+     * @param postid
+     * @return
+     */
+    @Transactional
+    public Response deleteNotice(Long postid) {
+        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
+        if (foundBoardPost.isEmpty()) throw new CommonException("해당 게시글을 찾을수 없습니다.");
+
+        BoardPost boardPost = foundBoardPost.get();
+        boardPostRepository.deleteByQuerydsl(boardPost);
 
         return Response.success(null);
     }

@@ -7,9 +7,7 @@ import com.example.knu.service.notice.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -28,6 +26,18 @@ public class NoticeController {
                                  @ModelAttribute @Valid NoticeCreation noticeCreation) throws IOException {
 
         Response response = noticeService.createNotice(user, noticeCreation);
+
+        return response;
+    }
+
+    /**
+     * 공지사항 삭제
+     */
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/api/admin/boards/notices/{postid}")
+    public Response deleteNotice(@PathVariable Long postid) {
+
+        Response response = noticeService.deleteNotice(postid);
 
         return response;
     }
