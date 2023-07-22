@@ -14,23 +14,24 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @RestController
 public class BoardPostController {
     private final BoardPostService postService;
 
-    @PostMapping("/boards/{categoryId}/post")
+    @PostMapping("/user/boards/{categoryId}/post")
     public Response<BoardPostCreateResponseDto> createBoardPost(@RequestBody BoardPostCreateRequestDto postDto,
                                                                 @PathVariable Long categoryId) {
 //        postService.createBoardPost(postDto, categoryId);
         return Response.success(postService.createBoardPost(postDto, categoryId));
     }
 
-    @GetMapping("/boards/{categoryId}/posts")
+    @GetMapping("/all/boards/{categoryId}/posts")
     public Response<List<BoardPostListResponseDto>> findBoardPost(@PathVariable Long categoryId) {
         return Response.success(postService.findBoardPost(categoryId));
     }
 
-    @GetMapping("/boards/{categoryId}/{postId}")
+    @GetMapping("/all/boards/{categoryId}/{postId}")
     public Response<BoardPostOneResponseDto> findOneBoardPost(@PathVariable Long categoryId,
                                                               @PathVariable Long postId) {
         return Response.success(postService.findOneBoardPost(categoryId, postId));
