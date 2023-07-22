@@ -7,9 +7,11 @@ import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.domain.repository.CommentRepository;
 import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.comment.request.CommentCreateRequestDto;
+import com.example.knu.dto.comment.request.CommentUpdateRequestDto;
 import com.example.knu.dto.comment.response.CommentCreateResponseDto;
 import com.example.knu.dto.comment.response.CommentDeleteResponseDto;
 import com.example.knu.dto.comment.response.CommentListResponseDto;
+import com.example.knu.dto.comment.response.CommentUpdateResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -73,5 +75,18 @@ public class CommentService {
 
         commentRepository.delete(comment);
         return new CommentDeleteResponseDto(comment);
+    }
+
+    @Transactional
+    public CommentUpdateResponseDto updateComment(Long commentId, CommentUpdateRequestDto updateDto, String username) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!comment.getUser().getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        comment.updateComment(updateDto);
+        return new CommentUpdateResponseDto(comment);
     }
 }

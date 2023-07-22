@@ -2,6 +2,7 @@ package com.example.knu.domain.entity;
 
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
+import com.example.knu.dto.comment.request.CommentUpdateRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -34,5 +35,9 @@ public class Comment extends BaseTimeEntity {
         this.boardPost = boardPost;
         this.user = user;
         this.commentContents = commentContents;
+    }
+
+    public void updateComment(CommentUpdateRequestDto updateDto) {
+        this.commentContents = updateDto.getCommentContents();
     }
 }

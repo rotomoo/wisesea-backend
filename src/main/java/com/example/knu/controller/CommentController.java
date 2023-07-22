@@ -2,9 +2,11 @@ package com.example.knu.controller;
 
 import com.example.knu.common.Response;
 import com.example.knu.dto.comment.request.CommentCreateRequestDto;
+import com.example.knu.dto.comment.request.CommentUpdateRequestDto;
 import com.example.knu.dto.comment.response.CommentCreateResponseDto;
 import com.example.knu.dto.comment.response.CommentDeleteResponseDto;
 import com.example.knu.dto.comment.response.CommentListResponseDto;
+import com.example.knu.dto.comment.response.CommentUpdateResponseDto;
 import com.example.knu.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -36,5 +38,13 @@ public class CommentController {
                                                             @PathVariable Long commentId,
                                                             Authentication authentication) {
         return Response.success(commentService.deleteComment(postId, commentId, authentication.getName()));
+    }
+
+    @PatchMapping("/user/boards/categories/{postId}/{commentId}")
+    public Response<CommentUpdateResponseDto> updateComment(@PathVariable Long postId,
+                                                            @PathVariable Long commentId,
+                                                            @RequestBody CommentUpdateRequestDto updateDto,
+                                                            Authentication authentication) {
+        return Response.success(commentService.updateComment(commentId, updateDto, authentication.getName()));
     }
 }
