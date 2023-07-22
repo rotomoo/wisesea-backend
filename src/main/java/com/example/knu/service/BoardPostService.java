@@ -2,8 +2,10 @@ package com.example.knu.service;
 
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
+import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.BoardCategoryRepository;
 import com.example.knu.domain.repository.BoardPostRepository;
+import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
 import com.example.knu.dto.board.response.BoardPostListResponseDto;
@@ -23,14 +25,19 @@ import java.util.stream.Collectors;
 public class BoardPostService {
     private final BoardPostRepository postRepository;
     private final BoardCategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public BoardPostCreateResponseDto createBoardPost(BoardPostCreateRequestDto postDto,
-                                                      Long categoryId) {
+                                                      Long categoryId,
+                                                      String username) {
         BoardCategory boardCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        BoardPost boardPost = postRepository.save(postDto.toEntity(boardCategory));
+        User user = userRepository.findOneWithAuthoritiesByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        BoardPost boardPost = postRepository.save(postDto.toEntity(boardCategory, user));
 
         return new BoardPostCreateResponseDto(boardPost);
     }

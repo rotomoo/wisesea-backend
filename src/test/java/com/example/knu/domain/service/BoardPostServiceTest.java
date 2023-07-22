@@ -68,7 +68,7 @@ class BoardPostServiceTest {
                 .contents("내용")
                 .build();
 
-        boardPostService.createBoardPost(createDto, boardCategory.getId());
+        boardPostService.createBoardPost(createDto, boardCategory.getId(), "username");
 
         // when
         List<BoardPost> findPost = boardPostRepository.findAll();
@@ -87,12 +87,12 @@ class BoardPostServiceTest {
                 .contents("내용")
                 .build();
 
-        boardPostService.createBoardPost(createDto, boardCategory.getId());
+        boardPostService.createBoardPost(createDto, boardCategory.getId(), "username");
         createDto = BoardPostCreateRequestDto.builder()
                 .title("멘토멘티")
                 .contents("내용")
                 .build();
-        boardPostService.createBoardPost(createDto, mentorCategory.getId());
+        boardPostService.createBoardPost(createDto, mentorCategory.getId(), "username");
 
         // when
         List<BoardPostListResponseDto> findPostListByCategoryId = boardPostService.findBoardPost(boardCategory.getId());
