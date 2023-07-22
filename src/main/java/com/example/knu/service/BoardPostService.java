@@ -83,7 +83,10 @@ public class BoardPostService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        post.updateBoardPost(updateDto);
+        BoardCategory boardCategory = categoryRepository.findById(updateDto.getCategoryId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        post.updateBoardPost(updateDto, boardCategory);
         return new BoardPostUpdateResponseDto(post);
     }
 

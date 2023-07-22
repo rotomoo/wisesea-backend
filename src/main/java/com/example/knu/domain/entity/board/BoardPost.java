@@ -49,8 +49,9 @@ public class BoardPost extends BaseTimeEntity {
         this.thumbnailImageUrl = thumbnailImageUrl;
     }
 
-    public void updateBoardPost(BoardPostUpdateRequestDto updateDto) {
+    public void updateBoardPost(BoardPostUpdateRequestDto updateDto, BoardCategory boardCategory) {
         this.title = updateDto.getTitle();
         this.contents = updateDto.getContents();
+        this.boardCategory = boardCategory;
     }
 }

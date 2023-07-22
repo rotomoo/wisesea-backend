@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 public class BoardPostUpdateRequestDto {
     private String title;
     private String contents;
+    private Long categoryId;
 }

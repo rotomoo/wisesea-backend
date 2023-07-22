@@ -34,6 +34,9 @@ public class BoardPostController {
         return Response.success(postService.findBoardPost(categoryId));
     }
 
+    /*
+    {categoryId} 빼도 됨
+     */
     @GetMapping("/all/boards/{categoryId}/{postId}")
     public Response<BoardPostOneResponseDto> findOneBoardPost(@PathVariable Long categoryId,
                                                               @PathVariable Long postId) {
