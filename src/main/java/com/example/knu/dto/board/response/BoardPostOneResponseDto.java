@@ -18,6 +18,7 @@ public class BoardPostOneResponseDto {
     private String category;
     private int likeCount;
     private int viewCount;
+    private int commentCount;
     private LocalDateTime createdAt;
 
     public BoardPostOneResponseDto(BoardPost post) {
@@ -29,6 +30,7 @@ public class BoardPostOneResponseDto {
         this.category = post.getBoardCategory().getName();
         this.likeCount = post.getLikeCount();
         this.viewCount = post.getViewCount();
+        this.commentCount = post.getComments().size();
         this.createdAt = post.getUpdatedAt();
     }
 }
