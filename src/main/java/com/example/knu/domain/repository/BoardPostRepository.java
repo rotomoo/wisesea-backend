@@ -11,10 +11,16 @@ import java.util.Optional;
 
 public interface BoardPostRepository extends JpaRepository<BoardPost, Long>, BoardPostCustom {
 
-    List<BoardPost> findAllByBoardCategoryId(Long categoryId);
+    @Query("select p " +
+            "from BoardPost p " +
+            "join fetch p.user " +
+            "left join fetch p.boardCategory c " +
+            "where p.boardCategory.id =:categoryId")
+    List<BoardPost> findAllByBoardCategoryId(@Param("categoryId") Long categoryId);
 
     @Query("select p " +
             "from BoardPost p " +
+            "join fetch p.user " +
             "left join fetch p.boardCategory c " +
             "left join fetch c.board b " +
             "where p.id =:postId")
