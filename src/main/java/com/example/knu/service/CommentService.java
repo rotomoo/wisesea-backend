@@ -8,6 +8,7 @@ import com.example.knu.domain.repository.CommentRepository;
 import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.comment.request.CommentCreateRequestDto;
 import com.example.knu.dto.comment.response.CommentCreateResponseDto;
+import com.example.knu.dto.comment.response.CommentDeleteResponseDto;
 import com.example.knu.dto.comment.response.CommentListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,29 @@ public class CommentService {
                 .map(CommentListResponseDto::new)
                 .collect(Collectors.toList());
         return commentListResponseDto;
+    }
+
+    @Transactional
+    public CommentDeleteResponseDto deleteComment(Long postId, Long commentId, String username) {
+        BoardPost post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (comment.getBoardPost().getId() != postId) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if (!comment.getUser().getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+//        User user = userRepository.findOneWithAuthoritiesByUsername(username).get();
+//        List<Comment> byUser = commentRepository.findByUser(user);
+//        for (Comment comment1 : byUser) {
+//            System.out.println(comment1);
+//        }
+
+
+        commentRepository.delete(comment);
+        return new CommentDeleteResponseDto(comment);
     }
 }

@@ -3,6 +3,7 @@ package com.example.knu.controller;
 import com.example.knu.common.Response;
 import com.example.knu.dto.comment.request.CommentCreateRequestDto;
 import com.example.knu.dto.comment.response.CommentCreateResponseDto;
+import com.example.knu.dto.comment.response.CommentDeleteResponseDto;
 import com.example.knu.dto.comment.response.CommentListResponseDto;
 import com.example.knu.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,12 @@ public class CommentController {
     public Response<List<CommentListResponseDto>> findComment(@PathVariable Long postId) {
 
         return Response.success(commentService.findComment(postId));
+    }
+
+    @DeleteMapping("/user/boards/categories/{postId}/{commentId}")
+    public Response<CommentDeleteResponseDto> deleteComment(@PathVariable Long postId,
+                                                            @PathVariable Long commentId,
+                                                            Authentication authentication) {
+        return Response.success(commentService.deleteComment(postId, commentId, authentication.getName()));
     }
 }
