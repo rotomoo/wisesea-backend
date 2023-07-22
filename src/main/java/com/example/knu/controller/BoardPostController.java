@@ -3,11 +3,13 @@ package com.example.knu.controller;
 import com.example.knu.common.Response;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
+import com.example.knu.dto.board.response.BoardPostDeleteResponseDto;
 import com.example.knu.dto.board.response.BoardPostListResponseDto;
 import com.example.knu.dto.board.response.BoardPostOneResponseDto;
 import com.example.knu.service.BoardPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +42,9 @@ public class BoardPostController {
         return Response.success(postService.findOneBoardPost(categoryId, postId));
     }
 
-
-
+    @DeleteMapping("/user/boards/categories/{postId}")
+    public Response<BoardPostDeleteResponseDto> deleteBoardPost(@PathVariable Long postId,
+                                                                Authentication authentication) {
+        return Response.success(postService.deleteBoardPost(postId, authentication.getName()));
+    }
 }
