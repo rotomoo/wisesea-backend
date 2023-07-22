@@ -15,6 +15,7 @@ public class BoardPostListResponseDto {
     private String nickname;
     private int likeCount;
     private int viewCount;
+    private int commentCount;
     private LocalDateTime createdAt;
 
     public BoardPostListResponseDto(BoardPost post) {
@@ -23,6 +24,7 @@ public class BoardPostListResponseDto {
         this.nickname = post.getUser().getNickname();
         this.likeCount = post.getLikeCount();
         this.viewCount = post.getViewCount();
+        this.commentCount = post.getComments().size();
         this.createdAt = post.getCreatedAt();
     }
 }
