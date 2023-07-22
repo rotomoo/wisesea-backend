@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class BoardPostListResponseDto {
     private Long id;
     private String title;
-//    private String nickname;
+    private String nickname;
     private int likeCount;
     private int viewCount;
     private LocalDateTime createdAt;
@@ -20,6 +20,7 @@ public class BoardPostListResponseDto {
     public BoardPostListResponseDto(BoardPost post) {
         this.id = post.getId();
         this.title = post.getTitle();
+        this.nickname = post.getUser().getNickname();
         this.likeCount = post.getLikeCount();
         this.viewCount = post.getViewCount();
         this.createdAt = post.getCreatedAt();

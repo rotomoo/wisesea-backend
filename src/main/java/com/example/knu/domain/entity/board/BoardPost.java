@@ -1,12 +1,17 @@
 package com.example.knu.domain.entity.board;
 
 import com.example.knu.domain.entity.BaseTimeEntity;
+import com.example.knu.domain.entity.Comment;
 import com.example.knu.domain.entity.user.User;
+import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -29,6 +34,10 @@ public class BoardPost extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "boardPost")
+    private List<Comment> comments = new ArrayList<>();
+
+
     @Builder
     public BoardPost(String title, String contents, String thumbnailImageUrl, int viewCount, int likeCount, BoardCategory boardCategory, User user) {
         this.title = title;
@@ -46,5 +55,11 @@ public class BoardPost extends BaseTimeEntity {
 
     public void updateThumbnailImageUrl(String thumbnailImageUrl) {
         this.thumbnailImageUrl = thumbnailImageUrl;
+    }
+
+    public void updateBoardPost(BoardPostUpdateRequestDto updateDto, BoardCategory boardCategory) {
+        this.title = updateDto.getTitle();
+        this.contents = updateDto.getContents();
+        this.boardCategory = boardCategory;
     }
 }

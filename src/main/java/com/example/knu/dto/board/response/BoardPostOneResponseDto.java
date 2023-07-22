@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BoardPostOneResponseDto {
     private Long id;
-//    private String nickname;
+    private String nickname;
     private String title;
     private String contents;
     private String board;
@@ -24,6 +24,7 @@ public class BoardPostOneResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.contents = post.getContents();
+        this.nickname = post.getUser().getNickname();
         this.board = post.getBoardCategory().getBoard().getName();
         this.category = post.getBoardCategory().getName();
         this.likeCount = post.getLikeCount();

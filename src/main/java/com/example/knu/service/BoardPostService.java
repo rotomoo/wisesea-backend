@@ -2,12 +2,13 @@ package com.example.knu.service;
 
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
+import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.BoardCategoryRepository;
 import com.example.knu.domain.repository.BoardPostRepository;
+import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
-import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
-import com.example.knu.dto.board.response.BoardPostListResponseDto;
-import com.example.knu.dto.board.response.BoardPostOneResponseDto;
+import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
+import com.example.knu.dto.board.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,19 @@ import java.util.stream.Collectors;
 public class BoardPostService {
     private final BoardPostRepository postRepository;
     private final BoardCategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public BoardPostCreateResponseDto createBoardPost(BoardPostCreateRequestDto postDto,
-                                                      Long categoryId) {
+                                                      Long categoryId,
+                                                      String username) {
         BoardCategory boardCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        BoardPost boardPost = postRepository.save(postDto.toEntity(boardCategory));
+        User user = userRepository.findOneWithAuthoritiesByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        BoardPost boardPost = postRepository.save(postDto.toEntity(boardCategory, user));
 
         return new BoardPostCreateResponseDto(boardPost);
     }
@@ -53,6 +59,35 @@ public class BoardPostService {
         byBoardPostId.plusBoardPostViewCount();
 
         return new BoardPostOneResponseDto(byBoardPostId);
+    }
+
+    @Transactional
+    public BoardPostDeleteResponseDto deleteBoardPost(Long postId, String username) {
+        // 그 게시글이 내가 로그이한 계정과 일치하는지 확인
+        BoardPost post = postRepository.findByBoardPostIdForDelete(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        postRepository.delete(post);
+        return new BoardPostDeleteResponseDto(post);
+    }
+
+    @Transactional
+    public BoardPostUpdateResponseDto updateBoardPost(Long postId, BoardPostUpdateRequestDto updateDto, String username) {
+        BoardPost post = postRepository.findByBoardPostIdForUpdate(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        BoardCategory boardCategory = categoryRepository.findById(updateDto.getCategoryId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        post.updateBoardPost(updateDto, boardCategory);
+        return new BoardPostUpdateResponseDto(post);
     }
 
 

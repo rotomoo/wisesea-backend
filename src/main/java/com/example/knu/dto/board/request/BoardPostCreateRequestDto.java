@@ -2,6 +2,7 @@ package com.example.knu.dto.board.request;
 
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
+import com.example.knu.domain.entity.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,12 +21,13 @@ public class BoardPostCreateRequestDto {
         this.thumbnailImageUrl = thumbnailImageUrl;
     }
 
-    public BoardPost toEntity(BoardCategory category) {
+    public BoardPost toEntity(BoardCategory category, User user) {
         return BoardPost.builder()
                 .title(title)
                 .contents(contents)
                 .thumbnailImageUrl(thumbnailImageUrl)
                 .boardCategory(category)
+                .user(user)
                 .build();
     }
 
