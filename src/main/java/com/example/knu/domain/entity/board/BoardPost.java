@@ -2,6 +2,7 @@ package com.example.knu.domain.entity.board;
 
 import com.example.knu.domain.entity.BaseTimeEntity;
 import com.example.knu.domain.entity.user.User;
+import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -46,5 +47,10 @@ public class BoardPost extends BaseTimeEntity {
 
     public void updateThumbnailImageUrl(String thumbnailImageUrl) {
         this.thumbnailImageUrl = thumbnailImageUrl;
+    }
+
+    public void updateBoardPost(BoardPostUpdateRequestDto updateDto) {
+        this.title = updateDto.getTitle();
+        this.contents = updateDto.getContents();
     }
 }

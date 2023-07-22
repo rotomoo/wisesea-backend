@@ -35,4 +35,12 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long>, Boa
             "join fetch p.user " +
             "where p.id =:postId")
     Optional<BoardPost> findByBoardPostIdForDelete(@Param("postId") Long postId);
+    /**
+     * 게시글 삭제할 때 하나 불러오는 쿼리
+     */
+    @Query("select p " +
+            "from BoardPost p " +
+            "join fetch p.user " +
+            "where p.id =:postId")
+    Optional<BoardPost> findByBoardPostIdForUpdate(@Param("postId") Long postId);
 }

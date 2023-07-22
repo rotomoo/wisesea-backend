@@ -2,10 +2,8 @@ package com.example.knu.controller;
 
 import com.example.knu.common.Response;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
-import com.example.knu.dto.board.response.BoardPostCreateResponseDto;
-import com.example.knu.dto.board.response.BoardPostDeleteResponseDto;
-import com.example.knu.dto.board.response.BoardPostListResponseDto;
-import com.example.knu.dto.board.response.BoardPostOneResponseDto;
+import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
+import com.example.knu.dto.board.response.*;
 import com.example.knu.service.BoardPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,5 +44,11 @@ public class BoardPostController {
     public Response<BoardPostDeleteResponseDto> deleteBoardPost(@PathVariable Long postId,
                                                                 Authentication authentication) {
         return Response.success(postService.deleteBoardPost(postId, authentication.getName()));
+    }
+    @PatchMapping("/user/boards/categories/{postId}")
+    public Response<BoardPostUpdateResponseDto> updateBoardPost(@PathVariable Long postId,
+                                                                @RequestBody BoardPostUpdateRequestDto updateDto,
+                                                                Authentication authentication) {
+        return Response.success(postService.updateBoardPost(postId, updateDto, authentication.getName()));
     }
 }
