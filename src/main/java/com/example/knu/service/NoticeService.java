@@ -52,20 +52,20 @@ public class NoticeService {
 
     /**
      * 공지사항 등록
-     * @param user
+     * @param principal
      * @param noticeCreation
      * @return
      */
     @Transactional
-    public Response createNotice(User user, NoticeCreation noticeCreation) throws IOException {
+    public Response createNotice(Principal principal, NoticeCreation noticeCreation) throws IOException {
         Optional<BoardCategory> foundBoardCategory = boardCategoryRepository.findById(6L);
         BoardCategory boardCategory = foundBoardCategory.get();
 
+        Optional<User> loginUser = userRepository.findByLoginId(principal.getName());
+        User user = loginUser.get();
+
         BoardPost boardPost = noticeCreation.createBoardPost(user, boardCategory);
         boardPostRepository.save(boardPost);
-
-        // TODO 로그인 기능 되면 유저 프로필 이미지 넣기
-        boardPost.updateThumbnailImageUrl(null);
 
         if (noticeCreation.getHashtags() != null && !noticeCreation.getHashtags().isEmpty()) {
             List<String> hashtags = noticeCreation.getHashtags();
