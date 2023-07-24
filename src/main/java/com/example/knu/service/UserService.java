@@ -1,10 +1,13 @@
 package com.example.knu.service;
 
 import com.example.knu.common.Response;
+import com.example.knu.common.s3.S3Directory;
+import com.example.knu.common.s3.S3Uploader;
 import com.example.knu.domain.entity.user.Authority;
 import com.example.knu.domain.entity.user.JwtToken;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.UserRepository;
+import com.example.knu.dto.user.ProfileImageDto;
 import com.example.knu.dto.user.ReissueRequest;
 import com.example.knu.dto.user.UserDto;
 import com.example.knu.dto.user.UserProfileDto;
@@ -14,6 +17,7 @@ import com.example.knu.exception.NotFoundMemberException;
 import com.example.knu.jwt.TokenProvider;
 import com.example.knu.util.SecurityUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -22,23 +26,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, TokenProvider tokenProvider) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.tokenProvider = tokenProvider;
-    }
+    private final S3Uploader s3Uploader;
 
     @Transactional
     public UserDto signup(UserDto userDto) {
@@ -136,4 +136,30 @@ public class UserService {
                 user.getEmailReceiveYn() == null
         ));
     }
+
+    /**
+     * 프로필 이미지 변경
+     * @param principal
+     * @param profileImageDto
+     * @return
+     */
+    @Transactional
+    public Response updateProfileImage(Principal principal, ProfileImageDto profileImageDto) throws IOException {
+        Optional<User> loginUser = userRepository.findByLoginId(principal.getName());
+        User user = loginUser.get();
+
+        String profileImageUrl = null;
+
+        if (profileImageDto.getProfileImage() != null && !profileImageDto.getProfileImage().isEmpty()) {
+
+            profileImageUrl = s3Uploader.uploadFileToS3(profileImageDto.getProfileImage(),
+                    S3Directory.USER_PROFILE.getPath() + user.getUserId());
+        }
+
+        user.setProfileImageUrl(profileImageUrl);
+
+        return Response.success(null);
+    }
+
+
 }

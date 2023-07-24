@@ -2,6 +2,8 @@ package com.example.knu.controller;
 
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.JwtToken;
+import com.example.knu.dto.notice.NoticeCreation;
+import com.example.knu.dto.user.ProfileImageDto;
 import com.example.knu.dto.user.ReissueRequest;
 import com.example.knu.dto.user.UserDto;
 import com.example.knu.service.UserService;
@@ -82,6 +84,19 @@ public class UserController {
     public Response getProfile(Principal principal) {
 
         Response response = userService.getProfile(principal);
+
+        return response;
+    }
+
+    /**
+     * 프로필 이미지 변경
+     */
+    @PreAuthorize("hasAnyRole('USER')")
+    @PatchMapping("/user/profile/image")
+    public Response updateProfileImage(Principal principal,
+                               @ModelAttribute @Valid ProfileImageDto profileImageDto) throws IOException {
+
+        Response response = userService.updateProfileImage(principal, profileImageDto);
 
         return response;
     }
