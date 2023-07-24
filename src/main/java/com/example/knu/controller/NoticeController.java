@@ -59,10 +59,10 @@ public class NoticeController {
     }
 
     /**
-     * 공지사항 좋아요
+     * 게시글 좋아요
      */
     @PreAuthorize("hasAnyRole('USER')")
-    @PostMapping("/api/user/boards/notices/{postid}/like")
+    @PostMapping("/api/user/boards/categories/{postid}/like")
     public Response likeNotice(Principal principal,
                                @PathVariable Long postid) {
 

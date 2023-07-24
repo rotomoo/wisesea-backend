@@ -189,7 +189,7 @@ public class NoticeService {
     }
 
     /**
-     * 공지사항 좋아요
+     * 게시글 좋아요
      * @param principal
      * @param postid
      * @return
