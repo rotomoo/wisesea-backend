@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileUsernameUpdateDto {
 
-    @NotBlank
-    private String username;
+
 
     @NotBlank(message = " 새로운 닉네임을 입력해주세요.")
     @Size(min = 2, max = 15, message = "닉네임은 2 ~ 15자 사이로 입력해주세요.")

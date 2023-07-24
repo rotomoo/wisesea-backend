@@ -21,7 +21,7 @@ public interface ProfileService {
     UserResponseDto findUser(String username);
 
     /**
-     * 회원 이름 변경
+     * 회원 닉네임 변경
      * @param profileUsernameUpdateDto
      * @return 회원 ID
      */
