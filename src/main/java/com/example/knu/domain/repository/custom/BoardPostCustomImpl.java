@@ -43,4 +43,15 @@ public class BoardPostCustomImpl implements BoardPostCustom {
                 .where(boardPost.eq(targetBoardPost))
                 .execute();
     }
+
+    @Override
+    public void deleteFileHashtagByQuerydsl(BoardPost targetBoardPost) {
+        queryFactory.delete(file)
+                .where(file.boardPost.eq(targetBoardPost))
+                .execute();
+
+        queryFactory.delete(boardPostHashtag)
+                .where(boardPostHashtag.boardPost.eq(boardPost))
+                .execute();
+    }
 }

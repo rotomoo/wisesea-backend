@@ -52,9 +52,9 @@ public class NoticeController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PatchMapping("/api/admin/boards/notices/{postid}")
     public Response updateNotice(@PathVariable Long postid,
-                                 @ModelAttribute @Valid NoticeUpdate noticeUpdate) {
+                                 @ModelAttribute @Valid NoticeCreation noticeCreation) throws IOException {
 
-        Response response = noticeService.updateNotice(postid, noticeUpdate);
+        Response response = noticeService.updateNotice(postid, noticeCreation);
 
         return response;
     }

@@ -122,18 +122,20 @@ public class NoticeService {
     /**
      * 공지사항 수정
      * @param postid
-     * @param noticeUpdate
+     * @param noticeCreation
      * @return
      */
     @Transactional
-    public Response updateNotice(Long postid, NoticeUpdate noticeUpdate) {
-/*        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
+    public Response updateNotice(Long postid, NoticeCreation noticeCreation) throws IOException {
+        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
         if (foundBoardPost.isEmpty()) throw new CommonException("해당 게시글을 찾을수 없습니다.");
 
         BoardPost boardPost = foundBoardPost.get();
 
-        if (noticeUpdate.getHashtags() != null && !noticeUpdate.getHashtags().isEmpty()) {
-            List<String> hashtags = noticeUpdate.getHashtags();
+        boardPostRepository.deleteFileHashtagByQuerydsl(boardPost);
+
+        if (noticeCreation.getHashtags() != null && !noticeCreation.getHashtags().isEmpty()) {
+            List<String> hashtags = noticeCreation.getHashtags();
             if (hashtags.size() > 5) throw new CommonException("해시태그는 5개까지 입력 가능합니다");
 
             for (String inputHashtag : hashtags) {
@@ -172,7 +174,7 @@ public class NoticeService {
                         .build();
                 fileRepository.save(file);
             }
-        }*/
+        }
 
         return Response.success(null);
     }
