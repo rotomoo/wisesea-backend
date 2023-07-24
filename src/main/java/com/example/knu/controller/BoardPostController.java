@@ -54,4 +54,26 @@ public class BoardPostController {
                                                                 Authentication authentication) {
         return Response.success(postService.updateBoardPost(postId, updateDto, authentication.getName()));
     }
+
+    /**
+     * 게시판 목록 조회
+     */
+    @GetMapping("/all/boards")
+    public Response getBoards() {
+
+        Response response = postService.getBoards();
+
+        return response;
+    }
+
+    /**
+     * 게시판 카테고리 목록 조회
+     */
+    @GetMapping("/all/boards/{boardid}/categories")
+    public Response getBoardCategories(@PathVariable Long boardid) {
+
+        Response response = postService.getBoardCategories(boardid);
+
+        return response;
+    }
 }

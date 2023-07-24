@@ -4,12 +4,10 @@ import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.dto.notice.CollegeNoticesRequest;
 import com.example.knu.dto.notice.NoticeCreation;
-import com.example.knu.dto.notice.NoticeUpdate;
 import com.example.knu.service.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,10 +59,10 @@ public class NoticeController {
     }
 
     /**
-     * 공지사항 좋아요
+     * 게시글 좋아요
      */
     @PreAuthorize("hasAnyRole('USER')")
-    @PostMapping("/api/user/boards/notices/{postid}/like")
+    @PostMapping("/api/user/boards/categories/{postid}/like")
     public Response likeNotice(Principal principal,
                                @PathVariable Long postid) {
 
