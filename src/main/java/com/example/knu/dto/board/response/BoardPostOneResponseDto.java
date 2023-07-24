@@ -16,6 +16,7 @@ public class BoardPostOneResponseDto {
     private String contents;
     private String board;
     private String category;
+    private String profileImage;
     private int likeCount;
     private int viewCount;
     private int commentCount;
@@ -28,6 +29,7 @@ public class BoardPostOneResponseDto {
         this.nickname = post.getUser().getNickname();
         this.board = post.getBoardCategory().getBoard().getName();
         this.category = post.getBoardCategory().getName();
+        this.profileImage = post.getUser().getProfileImageUrl();
         this.likeCount = post.getLikeCount();
         this.viewCount = post.getViewCount();
         this.commentCount = post.getComments().size();
