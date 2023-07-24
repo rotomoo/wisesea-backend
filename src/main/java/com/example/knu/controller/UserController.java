@@ -2,16 +2,19 @@ package com.example.knu.controller;
 
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.JwtToken;
+import com.example.knu.dto.user.ReissueRequest;
 import com.example.knu.dto.user.UserDto;
 import com.example.knu.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -58,5 +61,16 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(username));
+    }
+
+    /**
+     * 리프레시 토큰 갱신
+     */
+    @PostMapping("/all/refresh-token")
+    public Response reissue(HttpServletRequest request, @RequestBody @Valid ReissueRequest reissueRequest) {
+
+        Response response = userService.reissue(request, reissueRequest);
+
+        return response;
     }
 }
