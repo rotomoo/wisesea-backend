@@ -7,6 +7,7 @@ import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.user.ReissueRequest;
 import com.example.knu.dto.user.UserDto;
+import com.example.knu.dto.user.UserProfileDto;
 import com.example.knu.exception.CommonException;
 import com.example.knu.exception.DuplicateMemberException;
 import com.example.knu.exception.NotFoundMemberException;
@@ -21,9 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -112,5 +113,27 @@ public class UserService {
         JwtToken token = tokenProvider.createToken(accessAuthentication);
 
         return Response.success(token);
+    }
+
+    /**
+     * 프로필 조회
+     * @param principal
+     * @return
+     */
+    public Response getProfile(Principal principal) {
+        Optional<User> loginUser = userRepository.findByLoginId(principal.getName());
+        User user = loginUser.get();
+
+        return Response.success(new UserProfileDto(
+                user.getUserId(),
+                user.getLoginId(),
+                user.getPassword(),
+                user.getUsername(),
+                user.getUserType(),
+                user.getEmailReceiveYn(),
+                user.getNickname(),
+                user.getProfileImageUrl(),
+                user.getEmailReceiveYn() == null
+        ));
     }
 }

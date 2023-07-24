@@ -73,4 +73,16 @@ public class UserController {
 
         return response;
     }
+
+    /**
+     * 프로필 조회
+     */
+    @PreAuthorize("hasAnyRole('USER')")
+    @GetMapping("/user/profile")
+    public Response getProfile(Principal principal) {
+
+        Response response = userService.getProfile(principal);
+
+        return response;
+    }
 }
