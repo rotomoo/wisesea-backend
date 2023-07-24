@@ -62,4 +62,8 @@ public class BoardPost extends BaseTimeEntity {
         this.contents = updateDto.getContents();
         this.boardCategory = boardCategory;
     }
+
+    public void addLikeCount(int likeCount) {
+        this.likeCount += likeCount;
+    }
 }

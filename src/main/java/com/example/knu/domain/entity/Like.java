@@ -4,6 +4,7 @@ import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,10 @@ public class Like extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_post_id")
     private BoardPost boardPost;
+
+    @Builder
+    public Like(User user, BoardPost boardPost) {
+        this.user = user;
+        this.boardPost = boardPost;
+    }
 }
