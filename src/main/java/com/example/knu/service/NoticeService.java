@@ -1,5 +1,7 @@
 package com.example.knu.service;
 
+import com.example.knu.common.PagingResponse;
+import com.example.knu.common.PagingUtil;
 import com.example.knu.common.Response;
 import com.example.knu.common.s3.S3Directory;
 import com.example.knu.common.s3.S3Uploader;
@@ -10,12 +12,19 @@ import com.example.knu.domain.entity.Like;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
+import com.example.knu.domain.mapping.CollegeNoticesMapping;
 import com.example.knu.domain.repository.*;
 import com.example.knu.domain.repository.NoticeKnouOriginRepository;
+import com.example.knu.dto.notice.CollegeNoticesRequest;
+import com.example.knu.dto.notice.CollegeNoticesResponse;
 import com.example.knu.dto.notice.NoticeCreation;
 import com.example.knu.dto.notice.NoticeUpdate;
 import com.example.knu.exception.CommonException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -209,5 +218,24 @@ public class NoticeService {
         likeRepository.deleteByUserAndBoardPost(user, boardPost);
         boardPost.addLikeCount(-1);
         return Response.success(null);
+    }
+
+    /**
+     * 학과 공지사항 목록 조회
+     * @param collegeNoticesRequest
+     * @return
+     */
+    public Response getCollegeNotices(CollegeNoticesRequest collegeNoticesRequest) {
+
+        String direction = collegeNoticesRequest.getSort().getDirection();
+        String columnName = collegeNoticesRequest.getSort().getColumnName();
+        Sort sort = Sort.by(Sort.Direction.valueOf(direction), columnName);
+        Pageable pageable = PageRequest.of(collegeNoticesRequest.getPageNumber() - 1, collegeNoticesRequest.getPageSize(), sort);
+
+        Page<CollegeNoticesMapping> collegeNoticesMappingPage = noticeKnouOriginRepository.findAllByQuerydsl(pageable);
+
+        return Response.success(new CollegeNoticesResponse(
+                PagingResponse.createPagingInfo(collegeNoticesMappingPage), collegeNoticesMappingPage.getContent()
+        ));
     }
 }

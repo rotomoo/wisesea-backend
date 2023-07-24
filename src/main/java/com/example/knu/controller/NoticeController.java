@@ -2,6 +2,7 @@ package com.example.knu.controller;
 
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.User;
+import com.example.knu.dto.notice.CollegeNoticesRequest;
 import com.example.knu.dto.notice.NoticeCreation;
 import com.example.knu.dto.notice.NoticeUpdate;
 import com.example.knu.service.NoticeService;
@@ -68,6 +69,17 @@ public class NoticeController {
                                @PathVariable Long postid) {
 
         Response response = noticeService.likeNotice(principal, postid);
+
+        return response;
+    }
+
+    /**
+     * 학과 공지사항 목록 조회
+     */
+    @GetMapping("/api/all/college/notices")
+    public Response getCollegeNotices(@ModelAttribute @Valid CollegeNoticesRequest collegeNoticesRequest) {
+
+        Response response = noticeService.getCollegeNotices(collegeNoticesRequest);
 
         return response;
     }

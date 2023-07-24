@@ -1,7 +1,10 @@
 package com.example.knu.domain.repository;
 
 import com.example.knu.domain.entity.NoticeKnouOrigin;
+import com.example.knu.domain.repository.custom.NoticeKnouOriginCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NoticeKnouOriginRepository extends JpaRepository<NoticeKnouOrigin, Long> {
+import java.util.Map;
+
+public interface NoticeKnouOriginRepository extends JpaRepository<NoticeKnouOrigin, Long>, NoticeKnouOriginCustom {
 }
