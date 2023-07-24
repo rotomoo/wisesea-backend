@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class UserDto {
    @NotNull
    @Size(min = 3, max = 50)
-   private String loginId;
+   private String username;
 
    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
    @NotNull
@@ -34,7 +34,7 @@ public class UserDto {
       if(user == null) return null;
 
       return UserDto.builder()
-              .loginId(user.getLoginId())
+              .username(user.getUsername())
 
               .authorityDtoSet(user.getAuthorities().stream()
                       .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())

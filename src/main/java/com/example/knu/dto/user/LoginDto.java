@@ -14,7 +14,7 @@ public class LoginDto {
 
     @NotNull( message = "아이디를 입력해주세요")
     @Size(min = 3, max = 50)
-    private String logindId;
+    private String username;
 
     @NotBlank(message = "비밀번호를 입력해주세요")
 

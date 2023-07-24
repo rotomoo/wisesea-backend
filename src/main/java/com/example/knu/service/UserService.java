@@ -34,7 +34,7 @@ public class UserService {
 
     @Transactional
     public UserDto signup(UserDto userDto) {
-        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getLoginId()).orElse(null) != null) {
+        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
@@ -43,7 +43,7 @@ public class UserService {
                 .build();
 
         User user = User.builder()
-                .loginId(userDto.getLoginId())
+                .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .authorities(Collections.singleton(authority))
                 .activated(true)
@@ -52,9 +52,9 @@ public class UserService {
         return UserDto.from(userRepository.save(user));
     }
 
-    public JwtToken login(String loginId, String password) {
+    public JwtToken login(String username, String password) {
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         JwtToken token = TokenProvider.createToken(authentication);
@@ -64,8 +64,8 @@ public class UserService {
 
 
     @Transactional(readOnly = true)
-    public UserDto getUserWithAuthorities(String loginId) {
-        return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(loginId).orElse(null));
+    public UserDto getUserWithAuthorities(String username) {
+        return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
     }
 
     @Transactional(readOnly = true)
