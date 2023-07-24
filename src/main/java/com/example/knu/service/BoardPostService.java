@@ -1,10 +1,13 @@
 package com.example.knu.service;
 
+import com.example.knu.common.Response;
+import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.BoardCategoryRepository;
 import com.example.knu.domain.repository.BoardPostRepository;
+import com.example.knu.domain.repository.BoardRepository;
 import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
@@ -25,6 +28,7 @@ public class BoardPostService {
     private final BoardPostRepository postRepository;
     private final BoardCategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
 
     @Transactional
     public BoardPostCreateResponseDto createBoardPost(BoardPostCreateRequestDto postDto,
@@ -90,5 +94,45 @@ public class BoardPostService {
         return new BoardPostUpdateResponseDto(post);
     }
 
+    /**
+     * 게시판 목록 조회
+     * @return
+     */
+    public Response getBoards() {
+        List<Board> boards = boardRepository.findAllByOrderByPriorityAsc();
 
+        BoardResponseDto boardResponseDto = new BoardResponseDto();
+
+        List<BoardResponseDto.BoardDto> collect =
+                boards.stream().map(board -> new BoardResponseDto.BoardDto(
+                board.getId(),
+                board.getName(),
+                board.getDescription()
+        )).collect(Collectors.toList());
+
+        boardResponseDto.setList(collect);
+
+        return Response.success(boardResponseDto);
+    }
+
+    /**
+     * 게시판 카테고리 목록 조회
+     * @param boardid
+     * @return
+     */
+    public Response getBoardCategories(Long boardid) {
+        List<BoardCategory> boardCategories = categoryRepository.findAllByBoardIdOrderByPriorityAsc(boardid);
+
+        BoardCategoriesResponseDto boardCategoriesResponseDto = new BoardCategoriesResponseDto();
+
+        List<BoardCategoriesResponseDto.BoardCategoriesDto> collect =
+                boardCategories.stream().map(boardCategory -> new BoardCategoriesResponseDto.BoardCategoriesDto(
+                boardCategory.getId(),
+                boardCategory.getName()
+        )).collect(Collectors.toList());
+
+        boardCategoriesResponseDto.setList(collect);
+
+        return Response.success(boardCategoriesResponseDto);
+    }
 }
