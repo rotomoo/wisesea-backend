@@ -25,10 +25,10 @@ public class NoticeController {
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/api/admin/boards/notices/post")
-    public Response createNotice(@AuthenticationPrincipal User user,
+    public Response createNotice(Principal principal,
                                  @ModelAttribute @Valid NoticeCreation noticeCreation) throws IOException {
 
-        Response response = noticeService.createNotice(user, noticeCreation);
+        Response response = noticeService.createNotice(principal, noticeCreation);
 
         return response;
     }

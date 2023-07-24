@@ -23,7 +23,6 @@ public class BoardPost extends BaseTimeEntity {
     private Long id;
     private String title;
     private String contents;
-    private String thumbnailImageUrl;
     private int viewCount;
     private int likeCount;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,10 +38,9 @@ public class BoardPost extends BaseTimeEntity {
 
 
     @Builder
-    public BoardPost(String title, String contents, String thumbnailImageUrl, int viewCount, int likeCount, BoardCategory boardCategory, User user) {
+    public BoardPost(String title, String contents, int viewCount, int likeCount, BoardCategory boardCategory, User user) {
         this.title = title;
         this.contents = contents;
-        this.thumbnailImageUrl = thumbnailImageUrl;
         this.viewCount = viewCount;
         this.likeCount = likeCount;
         this.boardCategory = boardCategory;
@@ -51,10 +49,6 @@ public class BoardPost extends BaseTimeEntity {
 
     public void plusBoardPostViewCount() {
         this.viewCount++;
-    }
-
-    public void updateThumbnailImageUrl(String thumbnailImageUrl) {
-        this.thumbnailImageUrl = thumbnailImageUrl;
     }
 
     public void updateBoardPost(BoardPostUpdateRequestDto updateDto, BoardCategory boardCategory) {

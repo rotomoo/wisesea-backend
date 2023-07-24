@@ -13,19 +13,16 @@ import lombok.NoArgsConstructor;
 public class BoardPostCreateRequestDto {
     private String title;
     private String contents;
-    private String thumbnailImageUrl;
     @Builder
-    public BoardPostCreateRequestDto(String title, String contents, String thumbnailImageUrl) {
+    public BoardPostCreateRequestDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
-        this.thumbnailImageUrl = thumbnailImageUrl;
     }
 
     public BoardPost toEntity(BoardCategory category, User user) {
         return BoardPost.builder()
                 .title(title)
                 .contents(contents)
-                .thumbnailImageUrl(thumbnailImageUrl)
                 .boardCategory(category)
                 .user(user)
                 .build();
