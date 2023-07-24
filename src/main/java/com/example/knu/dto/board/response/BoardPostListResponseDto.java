@@ -13,6 +13,7 @@ public class BoardPostListResponseDto {
     private Long id;
     private String title;
     private String nickname;
+    private String profileImage;
     private int likeCount;
     private int viewCount;
     private int commentCount;
@@ -22,6 +23,7 @@ public class BoardPostListResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.nickname = post.getUser().getNickname();
+        this.profileImage = post.getUser().getProfileImageUrl();
         this.likeCount = post.getLikeCount();
         this.viewCount = post.getViewCount();
         this.commentCount = post.getComments().size();
