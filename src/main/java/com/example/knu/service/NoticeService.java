@@ -6,6 +6,7 @@ import com.example.knu.common.s3.S3Uploader;
 import com.example.knu.domain.entity.BoardPostHashtag;
 import com.example.knu.domain.entity.File;
 import com.example.knu.domain.entity.Hashtag;
+import com.example.knu.domain.entity.Like;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
@@ -15,11 +16,14 @@ import com.example.knu.dto.notice.NoticeCreation;
 import com.example.knu.dto.notice.NoticeUpdate;
 import com.example.knu.exception.CommonException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +38,8 @@ public class NoticeService {
     private final FileRepository fileRepository;
     private final HashtagRepository hashtagRepository;
     private final BoardPostHashtagRepository boardPostHashtagRepository;
+    private final LikeRepository likeRepository;
+    private final UserRepository userRepository;
 
     /**
      * 공지사항 등록
@@ -168,6 +174,38 @@ public class NoticeService {
             }
         }*/
 
+        return Response.success(null);
+    }
+
+    /**
+     * 공지사항 좋아요
+     * @param principal
+     * @param postid
+     * @return
+     */
+    @Transactional
+    public Response likeNotice(Principal principal, Long postid) {
+        Optional<BoardPost> foundBoardPost = boardPostRepository.findById(postid);
+        if (foundBoardPost.isEmpty()) throw new CommonException("해당 공지사항이 존재하지 않습니다.");
+        BoardPost boardPost = foundBoardPost.get();
+
+        Optional<User> loginUser = userRepository.findByLoginId(principal.getName());
+        User user = loginUser.get();
+
+        Optional<Like> foundLike = likeRepository.findByUserAndBoardPost(user, boardPost);
+
+        if (foundLike.isEmpty()) {
+            Like like = Like.builder()
+                    .user(user)
+                    .boardPost(boardPost)
+                    .build();
+            likeRepository.save(like);
+            boardPost.addLikeCount(1);
+            return Response.success(null);
+        }
+
+        likeRepository.deleteByUserAndBoardPost(user, boardPost);
+        boardPost.addLikeCount(-1);
         return Response.success(null);
     }
 }
