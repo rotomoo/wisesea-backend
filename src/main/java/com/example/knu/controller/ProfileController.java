@@ -78,7 +78,7 @@ public class ProfileController {
      * @param model
      * @return 회원 정보 페이지
      */
-    @PostMapping("/update/username")
+    @PatchMapping("/update/username")
     public String updateUsername(@Valid ProfileUsernameUpdateDto profileUsernameUpdateDTO, Errors errors, Model model, Authentication authentication) {
         if (errors.hasErrors()) {
             model.addAttribute("user", profileUsernameUpdateDTO);
@@ -97,7 +97,7 @@ public class ProfileController {
      */
     @GetMapping("/update/password")
     public String updatePasswordForm() {
-        return "/member/updatePassword";
+        return "/profile/updatePassword";
     }
     /**
      * 회원 비밀번호 변경 post
@@ -106,7 +106,7 @@ public class ProfileController {
      * @param authentication
      * @return 회원 정보 페이지
      */
-    @PatchMapping("/update/passwordrd")
+    @PatchMapping("/update/password")
     public String updatePassword(@Valid UserPasswordUpdateDto userPasswordUpdateDto, Model model, Authentication authentication) {
         // new password 비교
         if (!Objects.equals(userPasswordUpdateDto.getNewPassword(), userPasswordUpdateDto.getConfirmPassword())) {
