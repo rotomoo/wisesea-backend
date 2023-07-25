@@ -36,6 +36,8 @@ public class User {
 
     private String profileImageUrl;
 
+
+
     @Column(name = "activated")
     private boolean activated;
 
@@ -45,4 +47,15 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
+
+
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+
 }
