@@ -51,12 +51,13 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Long updateProfileUsername(ProfileUsernameUpdateDto profileUsernameUpdateDto) {
-        User user = profileRepository.findByUsername(profileUsernameUpdateDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
-
-        user.updateUsername(profileUsernameUpdateDto.getUsername());
-        profileRepository.save(user);
-
-        return user.getUserId();
+//        User user = profileRepository.findByUsername(profileUsernameUpdateDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+//
+//        user.updateUsername(profileUsernameUpdateDto.getUsername());
+//        profileRepository.save(user);
+//
+//        return user.getUserId();
+        return null;
     }
 
     @Override
