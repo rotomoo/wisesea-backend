@@ -127,13 +127,12 @@ public class UserService {
         return Response.success(new UserProfileDto(
                 user.getUserId(),
                 user.getLoginId(),
-                user.getPassword(),
                 user.getUsername(),
                 user.getUserType(),
                 user.getEmailReceiveYn(),
                 user.getNickname(),
                 user.getProfileImageUrl(),
-                user.getEmailReceiveYn() == null
+                user.isActivated()
         ));
     }
 

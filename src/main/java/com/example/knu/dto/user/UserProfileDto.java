@@ -10,7 +10,6 @@ import lombok.Data;
 public class UserProfileDto {
     private Long userId;
     private String loginId;
-    private String password;
     private String username;
     private UserType userType;
     private Boolean emailReceiveYn;
