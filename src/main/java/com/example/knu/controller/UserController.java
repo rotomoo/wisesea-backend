@@ -3,9 +3,7 @@ package com.example.knu.controller;
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.user.JwtToken;
 import com.example.knu.dto.notice.NoticeCreation;
-import com.example.knu.dto.user.ProfileImageDto;
-import com.example.knu.dto.user.ReissueRequest;
-import com.example.knu.dto.user.UserDto;
+import com.example.knu.dto.user.*;
 import com.example.knu.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -97,6 +95,30 @@ public class UserController {
                                @ModelAttribute @Valid ProfileImageDto profileImageDto) throws IOException {
 
         Response response = userService.updateProfileImage(principal, profileImageDto);
+
+        return response;
+    }
+
+    /**
+     * 프로필 닉네임 변경
+     */
+    @PreAuthorize("hasAnyRole('USER')")
+    @PatchMapping("/user/profile/nickname")
+    public Response updateProfileNickname(Principal principal, @RequestBody @Valid NicknameRequest nicknameRequest) {
+
+        Response response = userService.updateProfileNickname(principal, nicknameRequest);
+
+        return response;
+    }
+
+    /**
+     * 프로필 수정
+     */
+    @PreAuthorize("hasAnyRole('USER')")
+    @PatchMapping("/user/profile")
+    public Response updateProfile(Principal principal, @RequestBody @Valid ProfileUpdateRequest profileUpdateRequest) {
+
+        Response response = userService.updateProfile(principal, profileUpdateRequest);
 
         return response;
     }

@@ -7,10 +7,7 @@ import com.example.knu.domain.entity.user.Authority;
 import com.example.knu.domain.entity.user.JwtToken;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.repository.UserRepository;
-import com.example.knu.dto.user.ProfileImageDto;
-import com.example.knu.dto.user.ReissueRequest;
-import com.example.knu.dto.user.UserDto;
-import com.example.knu.dto.user.UserProfileDto;
+import com.example.knu.dto.user.*;
 import com.example.knu.exception.CommonException;
 import com.example.knu.exception.DuplicateMemberException;
 import com.example.knu.exception.NotFoundMemberException;
@@ -160,5 +157,47 @@ public class UserService {
         return Response.success(null);
     }
 
+    /**
+     * 프로필 닉네임 변경
+     * @param principal
+     * @param nicknameRequest
+     * @return
+     */
+    @Transactional
+    public Response updateProfileNickname(Principal principal, NicknameRequest nicknameRequest) {
+        Optional<User> loginUser = userRepository.findByLoginId(principal.getName());
+        User user = loginUser.get();
+        String nickname = nicknameRequest.getNickname();
 
+        if (user.getNickname().equals(nickname)) throw new CommonException("이전 닉네임과 동일합니다.");
+
+        Optional<User> foundUserByNickname = userRepository.findByNickname(nickname);
+
+        if (foundUserByNickname.isPresent()) throw new CommonException("해당 닉네임이 사용중입니다.");
+
+        user.updateNickname(nickname);
+
+        return Response.success(null);
+    }
+
+    /**
+     * 프로필 수정
+     * @param principal
+     * @param profileUpdateRequest
+     * @return
+     */
+    @Transactional
+    public Response updateProfile(Principal principal, ProfileUpdateRequest profileUpdateRequest) {
+        Optional<User> loginUser = userRepository.findByLoginId(principal.getName());
+        User user = loginUser.get();
+
+        user.updateUser(
+                profileUpdateRequest.getUsername(),
+                profileUpdateRequest.getUserType(),
+                profileUpdateRequest.getEmailReceiveYn()
+        );
+
+        return Response.success(null);
+
+    }
 }

@@ -21,6 +21,6 @@ public class BoardUnifiedPostMapping {
     private String contents;
     private Integer viewCount;
     private Integer likeCount;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
