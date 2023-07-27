@@ -4,17 +4,16 @@ import com.example.knu.common.Response;
 import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
+import com.example.knu.dto.board.request.BoardUnifiedPostsRequest;
 import com.example.knu.dto.board.response.*;
 import com.example.knu.service.BoardPostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -87,5 +86,30 @@ public class BoardPostController {
     @GetMapping("/all/boards/{categoryId}/posts")
     public Response<Page<BoardPostListResponseDto>> findBoardPostByPaging(@PathVariable Long categoryId, Pageable pageable) {
         return Response.success(postRepository.findBoardPost(categoryId, pageable));
+    }
+
+    /**
+     * 통합 검색 목록 조회
+     */
+    @GetMapping("/all/boards/posts/unified")
+    public Response getUnifiedBoardPosts(@ModelAttribute @Valid BoardUnifiedPostsRequest boardUnifiedPostsRequest) {
+
+        Response response = postService.getUnifiedBoardPosts(boardUnifiedPostsRequest);
+
+        return response;
+    }
+
+    /**
+     * 게시글 통합 조회
+     */
+    @GetMapping("/all/boards/{categoryId}/posts/unified")
+    public Response getUnifiedBoardPosts(@PathVariable Long categoryId,
+                                         @ModelAttribute @Valid BoardUnifiedPostsRequest boardUnifiedPostsRequest) {
+
+        boardUnifiedPostsRequest.setCategoryId(categoryId);
+
+        Response response = postService.getUnifiedBoardPosts(boardUnifiedPostsRequest);
+
+        return response;
     }
 }

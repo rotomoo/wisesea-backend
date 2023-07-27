@@ -44,7 +44,7 @@ public class NoticeKnouOriginCustomImpl implements NoticeKnouOriginCustom {
                 .from(noticeKnouOrigin)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(getOrderSpecifier(pageable.getSort()).stream().toArray(OrderSpecifier[]::new))
+                .orderBy(getOrderSpecifier(pageable.getSort()).toArray(OrderSpecifier[]::new))
                 .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());

@@ -26,7 +26,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
       ObjectMapper objectMapper = new ObjectMapper();
-      String msg = objectMapper.writeValueAsString(Response.unauthorized("access token이 만료되었거나 유효하지 않습니다."));
+      String msg = objectMapper.writeValueAsString(Response.unauthorized("access token이 만료되었거나 요청 URI가 유효하지 않습니다"));
 
       log.info("response data : {}", msg);
 

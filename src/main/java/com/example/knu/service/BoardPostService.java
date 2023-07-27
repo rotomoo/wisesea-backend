@@ -1,18 +1,26 @@
 package com.example.knu.service;
 
+import com.example.knu.common.PagingResponse;
 import com.example.knu.common.Response;
 import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
+import com.example.knu.domain.mapping.BoardUnifiedPostMapping;
+import com.example.knu.domain.mapping.CollegeNoticesMapping;
 import com.example.knu.domain.repository.BoardCategoryRepository;
 import com.example.knu.domain.repository.BoardPostRepository;
 import com.example.knu.domain.repository.BoardRepository;
 import com.example.knu.domain.repository.UserRepository;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
+import com.example.knu.dto.board.request.BoardUnifiedPostsRequest;
 import com.example.knu.dto.board.response.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,5 +142,24 @@ public class BoardPostService {
         boardCategoriesResponseDto.setList(collect);
 
         return Response.success(boardCategoriesResponseDto);
+    }
+
+    /**
+     * 통합 검색
+     * @param boardUnifiedPostsRequest
+     * @return
+     */
+    public Response getUnifiedBoardPosts(BoardUnifiedPostsRequest boardUnifiedPostsRequest) {
+        String direction = boardUnifiedPostsRequest.getSort().getDirection();
+        String columnName = boardUnifiedPostsRequest.getSort().getColumnName();
+        Sort sort = Sort.by(Sort.Direction.valueOf(direction), columnName);
+        PageRequest pageable = PageRequest.of(boardUnifiedPostsRequest.getPageNumber() - 1, boardUnifiedPostsRequest.getPageSize(), sort);
+
+        Page<BoardUnifiedPostMapping> boardUnifiedPostMappingPage =
+                postRepository.findAllByQuerydsl(boardUnifiedPostsRequest.getCategoryId(), boardUnifiedPostsRequest.getInput(), pageable);
+
+        return Response.success(new BoardUnifiedPostsResponse(
+                PagingResponse.createPagingInfo(boardUnifiedPostMappingPage), boardUnifiedPostMappingPage.getContent()
+        ));
     }
 }
