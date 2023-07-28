@@ -127,7 +127,7 @@ public class BoardPostService {
 
             for (MultipartFile multipartFile : files) {
                 String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
-                        S3Directory.BOARD.getPath() + post.getId() + S3Directory.FILES.getPath());
+                        S3Directory.BOARD.getPath() + post.getId() + S3Directory.FILES.getPath() + multipartFile.getOriginalFilename());
 
                 File file = File.builder()
                         .boardPost(post)
