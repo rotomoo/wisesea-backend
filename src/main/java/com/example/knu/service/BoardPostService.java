@@ -108,7 +108,7 @@ public class BoardPostService {
     }
 
     @Transactional
-    public BoardPostUpdateResponseDto updateBoardPost(Long postId, BoardPostUpdateRequestDto updateDto, String username) {
+    public BoardPostUpdateResponseDto updateBoardPost(Long postId, BoardPostUpdateRequestDto updateDto, String username) throws IOException {
         BoardPost post = postRepository.findByBoardPostIdForUpdate(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -120,6 +120,23 @@ public class BoardPostService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         post.updateBoardPost(updateDto, boardCategory);
+
+        if (updateDto.getFiles() != null && !updateDto.getFiles().isEmpty()) {
+            List<MultipartFile> files = updateDto.getFiles();
+            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+
+            for (MultipartFile multipartFile : files) {
+                String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
+                        S3Directory.BOARD.getPath() + post.getId() + S3Directory.FILES.getPath());
+
+                File file = File.builder()
+                        .boardPost(post)
+                        .url(fileUrl)
+                        .build();
+                fileRepository.save(file);
+            }
+        }
+
         return new BoardPostUpdateResponseDto(post);
     }
 
