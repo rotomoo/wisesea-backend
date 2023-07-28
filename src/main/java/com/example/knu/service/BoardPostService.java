@@ -2,20 +2,21 @@ package com.example.knu.service;
 
 import com.example.knu.common.PagingResponse;
 import com.example.knu.common.Response;
+import com.example.knu.common.s3.S3Directory;
+import com.example.knu.common.s3.S3Uploader;
+import com.example.knu.domain.entity.File;
 import com.example.knu.domain.entity.board.Board;
 import com.example.knu.domain.entity.board.BoardCategory;
 import com.example.knu.domain.entity.board.BoardPost;
 import com.example.knu.domain.entity.user.User;
 import com.example.knu.domain.mapping.BoardUnifiedPostMapping;
 import com.example.knu.domain.mapping.CollegeNoticesMapping;
-import com.example.knu.domain.repository.BoardCategoryRepository;
-import com.example.knu.domain.repository.BoardPostRepository;
-import com.example.knu.domain.repository.BoardRepository;
-import com.example.knu.domain.repository.UserRepository;
+import com.example.knu.domain.repository.*;
 import com.example.knu.dto.board.request.BoardPostCreateRequestDto;
 import com.example.knu.dto.board.request.BoardPostUpdateRequestDto;
 import com.example.knu.dto.board.request.BoardUnifiedPostsRequest;
 import com.example.knu.dto.board.response.*;
+import com.example.knu.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,8 +25,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,11 +40,13 @@ public class BoardPostService {
     private final BoardCategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final S3Uploader s3Uploader;
+    private final FileRepository fileRepository;
 
     @Transactional
     public BoardPostCreateResponseDto createBoardPost(BoardPostCreateRequestDto postDto,
                                                       Long categoryId,
-                                                      String username) {
+                                                      String username) throws IOException {
         BoardCategory boardCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -49,6 +54,22 @@ public class BoardPostService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         BoardPost boardPost = postRepository.save(postDto.toEntity(boardCategory, user));
+
+        if (postDto.getFiles() != null && !postDto.getFiles().isEmpty()) {
+            List<MultipartFile> files = postDto.getFiles();
+            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+
+            for (MultipartFile multipartFile : files) {
+                String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
+                        S3Directory.BOARD.getPath() + boardPost.getId() + S3Directory.FILES.getPath());
+
+                File file = File.builder()
+                        .boardPost(boardPost)
+                        .url(fileUrl)
+                        .build();
+                fileRepository.save(file);
+            }
+        }
 
         return new BoardPostCreateResponseDto(boardPost);
     }

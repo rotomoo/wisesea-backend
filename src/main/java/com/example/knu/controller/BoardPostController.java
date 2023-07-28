@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -26,7 +28,7 @@ public class BoardPostController {
     @PostMapping("/user/boards/{categoryId}/post")
     public Response<BoardPostCreateResponseDto> createBoardPost(@RequestBody BoardPostCreateRequestDto postDto,
                                                                 @PathVariable Long categoryId,
-                                                                Authentication authentication) {
+                                                                Authentication authentication) throws IOException {
 //        postService.createBoardPost(postDto, categoryId);
         log.info(authentication.getName());
         return Response.success(postService.createBoardPost(postDto, categoryId, authentication.getName()));
