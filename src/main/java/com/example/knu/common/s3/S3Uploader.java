@@ -20,8 +20,8 @@ public class S3Uploader {
 
     public String uploadFileToS3(MultipartFile multipartFile, String filePath) throws IOException {
 
-        UUID uuid = UUID.randomUUID();
-        filePath += uuid;
+//        UUID uuid = UUID.randomUUID();
+//        filePath += uuid;
 
         ObjectMetadata objectMetaData = new ObjectMetadata();
         objectMetaData.setContentType(multipartFile.getContentType());
