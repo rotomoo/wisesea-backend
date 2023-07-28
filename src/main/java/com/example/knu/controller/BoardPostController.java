@@ -26,7 +26,7 @@ public class BoardPostController {
     private final BoardPostRepository postRepository;
 
     @PostMapping("/user/boards/{categoryId}/post")
-    public Response<BoardPostCreateResponseDto> createBoardPost(@RequestBody BoardPostCreateRequestDto postDto,
+    public Response<BoardPostCreateResponseDto> createBoardPost(@ModelAttribute BoardPostCreateRequestDto postDto,
                                                                 @PathVariable Long categoryId,
                                                                 Authentication authentication) throws IOException {
 //        postService.createBoardPost(postDto, categoryId);
