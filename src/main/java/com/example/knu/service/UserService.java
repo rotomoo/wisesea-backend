@@ -153,7 +153,7 @@ public class UserService {
 
             MultipartFile profileImage = profileImageDto.getProfileImage();
             profileImageUrl = s3Uploader.uploadFileToS3(profileImage,
-                    S3Directory.USER_PROFILE.getPath() + user.getUserId() + profileImage.getOriginalFilename());
+                    S3Directory.USER_PROFILE.getPath() + user.getUserId() + "/" + profileImage.getOriginalFilename());
         }
 
         user.setProfileImageUrl(profileImageUrl);
