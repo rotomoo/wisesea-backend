@@ -95,7 +95,7 @@ public class NoticeService {
 
         if (noticeCreation.getFiles() != null && !noticeCreation.getFiles().isEmpty()) {
             List<MultipartFile> files = noticeCreation.getFiles();
-            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+//            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
 
             for (MultipartFile multipartFile : files) {
                 String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
@@ -171,7 +171,7 @@ public class NoticeService {
 
         if (noticeCreation.getFiles() != null && !noticeCreation.getFiles().isEmpty()) {
             List<MultipartFile> files = noticeCreation.getFiles();
-            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+//            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
 
             for (MultipartFile multipartFile : files) {
                 String fileUrl = s3Uploader.uploadFileToS3(multipartFile,

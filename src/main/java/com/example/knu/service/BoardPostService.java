@@ -57,7 +57,7 @@ public class BoardPostService {
 
         if (postDto.getFiles() != null && !postDto.getFiles().isEmpty()) {
             List<MultipartFile> files = postDto.getFiles();
-            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+//            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
 
             for (MultipartFile multipartFile : files) {
                 String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
@@ -123,7 +123,7 @@ public class BoardPostService {
 
         if (updateDto.getFiles() != null && !updateDto.getFiles().isEmpty()) {
             List<MultipartFile> files = updateDto.getFiles();
-            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
+//            if (files.size() > 5) throw new CommonException("파일은 5개까지 등록 가능합니다");
 
             for (MultipartFile multipartFile : files) {
                 String fileUrl = s3Uploader.uploadFileToS3(multipartFile,
