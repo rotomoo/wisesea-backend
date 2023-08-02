@@ -2,7 +2,7 @@ package com.example.knu.dto.board.request.sort;
 
 public enum BoardUnifiedPostsSort {
 
-    UPDATE_AT_DESC("updatedAt", "DESC")
+    BOARD_POST_ID_DESC("id", "DESC")
     ;
 
     private String columnName;

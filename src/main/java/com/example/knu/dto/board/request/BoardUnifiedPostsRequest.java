@@ -20,5 +20,5 @@ public class BoardUnifiedPostsRequest {
 
     private Integer pageSize = 10;
 
-    private BoardUnifiedPostsSort sort = BoardUnifiedPostsSort.UPDATE_AT_DESC;
+    private BoardUnifiedPostsSort sort = BoardUnifiedPostsSort.BOARD_POST_ID_DESC;
 }

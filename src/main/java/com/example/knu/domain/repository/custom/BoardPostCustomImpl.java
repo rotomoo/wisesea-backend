@@ -167,7 +167,7 @@ public class BoardPostCustomImpl implements BoardPostCustom {
         List<OrderSpecifier> orders = new ArrayList<>();
 
         if (sort.isUnsorted()) {
-            orders.add(new OrderSpecifier(Order.DESC, Expressions.path(BoardPost.class, boardPost, "updatedAt")));
+            orders.add(new OrderSpecifier(Order.DESC, Expressions.path(BoardPost.class, boardPost, "id")));
         } else {
             // 동적 정렬 생성
             sort.stream().forEach(order -> {
@@ -177,7 +177,7 @@ public class BoardPostCustomImpl implements BoardPostCustom {
                 Path<Object> fieldPath = Expressions.path(BoardPost.class, boardPost, fieldName);
 
                 orders.add(new OrderSpecifier(direction, fieldPath));
-                orders.add(new OrderSpecifier(Order.DESC, boardPost.updatedAt));
+                orders.add(new OrderSpecifier(Order.DESC, boardPost.id));
             });
         }
 
