@@ -13,5 +13,5 @@ public interface BoardPostCustom {
     void deleteFileHashtagByQuerydsl(BoardPost boardPost);
     Page<BoardPostListResponseDto> findBoardPost(Long categoryId, Pageable pageable);
 
-    Page<BoardUnifiedPostMapping> findAllByQuerydsl(Long categoryId, String input, PageRequest pageable);
+    Page<BoardUnifiedPostMapping> findAllByQuerydsl(Long boardId, Long categoryId, String input, PageRequest pageable);
 }

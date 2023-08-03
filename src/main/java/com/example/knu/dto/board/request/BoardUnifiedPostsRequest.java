@@ -13,6 +13,8 @@ public class BoardUnifiedPostsRequest {
     // 필터
     private String input;
 
+    private Long boardId;
+
     private Long categoryId;
 
     // 페이징
