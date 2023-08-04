@@ -14,6 +14,7 @@ public class CommentListResponseDto {
     private String loginId;
     private String nickname;
     private String commentContents;
+    private String image;
     private LocalDateTime createdAt;
 
     public CommentListResponseDto(Comment comment) {
@@ -21,11 +22,7 @@ public class CommentListResponseDto {
         this.loginId = comment.getUser().getLoginId();
         this.nickname = comment.getUser().getNickname();
         this.commentContents = comment.getCommentContents();
+        this.image = comment.getUser().getProfileImageUrl();
         this.createdAt = comment.getCreatedAt();
     }
-//    public CommentListResponseDto(Comment comment) {
-//        this.id = comment.getId();
-//        this.commentContents = comment.getCommentContents();
-//        this.createdAt = comment.getCreatedAt();
-//    }
 }
