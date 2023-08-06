@@ -51,7 +51,7 @@ public class BoardPostController {
     }
     @PatchMapping("/user/boards/categories/{postId}")
     public Response<BoardPostUpdateResponseDto> updateBoardPost(@PathVariable Long postId,
-                                                                @RequestBody BoardPostUpdateRequestDto updateDto,
+                                                                BoardPostUpdateRequestDto updateDto,
                                                                 Authentication authentication) throws IOException {
         return Response.success(postService.updateBoardPost(postId, updateDto, authentication.getName()));
     }

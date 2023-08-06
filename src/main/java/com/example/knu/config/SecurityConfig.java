@@ -67,13 +67,9 @@ public class SecurityConfig {
                                 "/api/hello",
                                 "/api/authenticate",
                                 "/api/signup",
-
                                 "/api/login",
-
-
                                 "/api/all/**",
                                 "/api/get/test/**"
-
                                 ).permitAll()
 //                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated()
