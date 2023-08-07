@@ -99,7 +99,7 @@ public class BoardPostCustomImpl implements BoardPostCustom {
     }
 
     @Override
-    public Page<BoardUnifiedPostMapping> findAllByQuerydsl(Long categoryId, String input, PageRequest pageable) {
+    public Page<BoardUnifiedPostMapping> findAllByQuerydsl(Long boardId, Long categoryId, String input, PageRequest pageable) {
         QueryResults<BoardUnifiedPostMapping> results = queryFactory.select(Projections.fields(BoardUnifiedPostMapping.class,
                         board.id.as("boardId"),
                         board.name.as("boardName"),
@@ -122,7 +122,7 @@ public class BoardPostCustomImpl implements BoardPostCustom {
                 .join(boardPost.boardCategory)
                 .join(boardCategory.board)
                 .join(boardPost.user)
-                .where(generateWhereCondition(categoryId, input))
+                .where(generateWhereCondition(boardId, categoryId, input))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(getOrderSpecifier(pageable.getSort()).toArray(OrderSpecifier[]::new))
@@ -137,8 +137,13 @@ public class BoardPostCustomImpl implements BoardPostCustom {
      * @param input
      * @return
      */
-    private BooleanBuilder generateWhereCondition(Long categoryId, String input) {
+    private BooleanBuilder generateWhereCondition(Long boardId, Long categoryId, String input) {
         BooleanBuilder builder = new BooleanBuilder();
+
+        // 보드 ID 필터
+        if (boardId != null) {
+            builder.and(board.id.eq(boardId));
+        }
 
         // 카테고리 ID 필터
         if (categoryId != null) {

@@ -39,13 +39,9 @@ public class BoardPostController {
 //        return Response.success(postService.findBoardPost(categoryId));
 //    }
 
-    /*
-    {categoryId} 빼도 됨
-     */
-    @GetMapping("/all/boards/{categoryId}/{postId}")
-    public Response<BoardPostOneResponseDto> findOneBoardPost(@PathVariable Long categoryId,
-                                                              @PathVariable Long postId) {
-        return Response.success(postService.findOneBoardPost(categoryId, postId));
+    @GetMapping("/all/boards/categories/{postId}")
+    public Response<BoardPostOneResponseDto> findOneBoardPost(@PathVariable Long postId) {
+        return Response.success(postService.findOneBoardPost(postId));
     }
 
     @DeleteMapping("/user/boards/categories/{postId}")
@@ -96,21 +92,35 @@ public class BoardPostController {
     @GetMapping("/all/boards/posts/unified")
     public Response getUnifiedBoardPosts(@ModelAttribute @Valid BoardUnifiedPostsRequest boardUnifiedPostsRequest) {
 
-        Response response = postService.getUnifiedBoardPosts(boardUnifiedPostsRequest);
+        Response response = postService.getCategoryUnifiedBoardPosts(boardUnifiedPostsRequest);
 
         return response;
     }
 
     /**
-     * 게시글 통합 조회
+     * 카테고리 게시글 통합 조회
      */
     @GetMapping("/all/boards/{categoryId}/posts/unified")
-    public Response getUnifiedBoardPosts(@PathVariable Long categoryId,
+    public Response getCategoryUnifiedBoardPosts(@PathVariable Long categoryId,
                                          @ModelAttribute @Valid BoardUnifiedPostsRequest boardUnifiedPostsRequest) {
 
         boardUnifiedPostsRequest.setCategoryId(categoryId);
 
-        Response response = postService.getUnifiedBoardPosts(boardUnifiedPostsRequest);
+        Response response = postService.getCategoryUnifiedBoardPosts(boardUnifiedPostsRequest);
+
+        return response;
+    }
+
+    /**
+     * 게시판 게시글 통합 조회
+     */
+    @GetMapping("/all/{boardId}/categories/posts/unified")
+    public Response getUnifiedBoardPosts(@PathVariable Long boardId,
+                                         @ModelAttribute @Valid BoardUnifiedPostsRequest boardUnifiedPostsRequest) {
+
+        boardUnifiedPostsRequest.setBoardId(boardId);
+
+        Response response = postService.getCategoryUnifiedBoardPosts(boardUnifiedPostsRequest);
 
         return response;
     }
