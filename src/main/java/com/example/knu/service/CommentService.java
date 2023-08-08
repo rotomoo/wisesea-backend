@@ -59,7 +59,8 @@ public class CommentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (comment.getBoardPost().getId() != postId) {
+        BoardPost boardPost = comment.getBoardPost();
+        if (boardPost.getId() != postId) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
