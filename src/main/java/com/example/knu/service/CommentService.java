@@ -63,7 +63,8 @@ public class CommentService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        if (!comment.getUser().getUsername().equals(username)) {
+        User user = comment.getUser();
+        if (!user.getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 //        User user = userRepository.findOneWithAuthoritiesByUsername(username).get();

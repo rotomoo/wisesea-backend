@@ -81,6 +81,7 @@ public class BoardPostService {
         return boardPostListResponseDtos;
     }
 
+    @Transactional
     public BoardPostOneResponseDto findOneBoardPost(Long postId) {
         BoardPost byBoardPostId = postRepository.findByBoardPostId(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
